@@ -1,0 +1,123 @@
+---
+import Layout from '../layouts/Layout.astro';
+
+//SEO CONFIG PAGE BY PAGE
+const pagetitle = "Gallery";
+const description = "Explore Our Work: Roofing & Renovation Gallery";
+
+
+// Hardcoded image data
+const images = [
+  { id: 1, src: '/location-placeholder.webp', category: 'residential-roofing', alt: 'Residential Roofing' },
+  { id: 2, src: '/location-placeholder.webp', category: 'commercial-roofing', alt: 'Commercial Roofing' },
+  { id: 3, src: '/location-placeholder.webp', category: 'roof-repairs', alt: 'Roof Repairs' },
+  { id: 4, src: '/location-placeholder.webp', category: 'heat-tape', alt: 'Heat Tape, Gutters & Downspout' },
+  { id: 5, src: '/location-placeholder.webp', category: 'remodeling', alt: 'Remodeling' },
+  // Add more images as needed
+];
+
+---
+<Layout title={pagetitle} description={description}>
+
+    <section class="bg-primary px-4 md:p-25 pt-30 md:mt-15">  
+        <div class="container mx-auto text-white font-thin text-sm">
+            <div class="flex overflow-hidden">
+               <div class="w-65 flex-none">
+                    <h1 class="text-base md:text-4xl max-w-3/4">
+                        Gallery
+                    </h1>
+                </div>
+                <div class="w-32 flex-auto"><a href="#" class="hover:text-light-brown">All Categories</a></div>
+                <div class="w-32 flex-auto">
+                    <ul class="list-none">
+                        <li><a href="#" class="hover:text-light-brown">Residential Roofing</a></li>
+                        <li><a href="#" class="hover:text-light-brown">Residential Roofing</a></li>
+                        <li><a href="#" class="hover:text-light-brown">Residential Roofing</a></li>
+                    </ul>
+                </div>
+                <div class="w-32 flex-auto">
+                    <ul class="list-none">
+                        <li><a href="#" class="hover:text-light-brown">Residential Roofing</a></li>
+                        <li><a href="#" class="hover:text-light-brown">Residential Roofing</a></li>
+                        <li><a href="#" class="hover:text-light-brown">Residential Roofing</a></li>
+                    </ul>
+                </div>
+                <div class="w-32 flex-auto">
+                    <ul class="list-none">
+                        <li><a href="#" class="hover:text-light-brown">Roof Repairs</a></li>
+                        <li><a href="#" class="hover:text-light-brown">Heat Tape, Gutters, & Downspout </a></li>
+                        <li><a href="#" class="hover:text-light-brown">Remodeling  </a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-y-4 gap-x-4 mt-10 text-2xl">
+            <!-- Column 1 -->
+                <a href="#">
+                <div class="flex flex-col space-y-3">
+                    <div class="relative">
+                    <img 
+                        src="/images/location-placeholder.webp" 
+                        alt="Summit County" 
+                        class="w-full hover:brightness-50 transition-all duration-300"
+                    />
+                    </div>
+                </div>
+                </a>
+                <!-- Column 2 -->
+                <a href="#">
+                    <div class="flex flex-col space-y-3">
+                        <img 
+                        src="/images/location-placeholder.webp" 
+                        alt="Summit County" 
+                        class="w-full hover:brightness-50 transition-all duration-300"
+                        />
+                    </div>
+                </a>
+                <!-- Column 3 -->
+                <a href="#">
+                    <div class="flex flex-col space-y-3">
+                        <img 
+                        src="/images/location-placeholder.webp" 
+                        alt="Summit County" 
+                        class="w-full hover:brightness-50 transition-all duration-300"
+                        />
+                    </div>
+                </a>  
+            <!-- Column 1 -->
+                <a href="#">
+                <div class="flex flex-col space-y-3">
+                    <div class="relative">
+                    <img 
+                        src="/images/location-placeholder.webp" 
+                        alt="Summit County" 
+                        class="w-full hover:brightness-50 transition-all duration-300"
+                    />
+                    </div>
+                </div>
+                </a>
+                <!-- Column 2 -->
+                <a href="#">
+                    <div class="flex flex-col space-y-3">
+                        <img 
+                        src="/images/location-placeholder.webp" 
+                        alt="Summit County" 
+                        class="w-full hover:brightness-50 transition-all duration-300"
+                        />
+                    </div>
+                </a>
+                <!-- Column 3 -->
+                <a href="#">
+                    <div class="flex flex-col space-y-3">
+                        <img 
+                        src="/images/location-placeholder.webp" 
+                        alt="Summit County" 
+                        class="w-full hover:brightness-50 transition-all duration-300"
+                        />
+                    </div>
+                </a>       
+            </div>
+
+        </div>
+    </section>
+
+</Layout>

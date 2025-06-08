@@ -1,0 +1,24 @@
+---
+import Layout from '../layouts/Layout.astro';
+
+//Services Components
+import InquireForm from '../components/InquireForm.astro';
+
+//SEO CONFIG PAGE BY PAGE
+const pagetitle = "Contact";
+const description = "Contact us today for all your roofing, gutter, window, and door needs.";
+---
+
+<Layout title={pagetitle} description={description}>
+    <div class="flex flex-col h-[360px] sm:h-[50vh] mt-15 md:mt-25 overflow-hidden">
+        <img src="/images/contact-hero.webp" alt="Hero Image" class="w-full h-full object-cover" />	
+    </div>
+    <section class="flex-grow container mx-auto text-left px-4 md:px-0 py-10 md:py-15 content-start">
+        <h1 class="text-white font-thin leading-[1.4] text-medium md:text-4xl md:max-w-3/4 ">
+            Contact us today for all your roofing, gutter, window, and door needs. Let us protect and enhance your property. Reach out to us at (970) 1234-3456 to schedule a free consultation and estimate.
+        </h1>
+        <div class="mt-10 md:mt-20">
+            <InquireForm />
+        </div>
+    </section>
+</Layout>

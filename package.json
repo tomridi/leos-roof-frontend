@@ -1,0 +1,39 @@
+{
+  "name": "www",
+  "type": "module",
+  "version": "0.0.1",
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "astro": "astro"
+  },
+  "dependencies": {
+    "@astrojs/react": "^4.2.7",
+    "@fontsource-variable/libre-franklin": "^5.2.5",
+    "@fontsource-variable/manrope": "^5.2.5",
+    "@payloadcms/richtext-lexical": "^3.40.0",
+    "@tailwindcss/typography": "^0.5.16",
+    "@tailwindcss/vite": "^4.1.7",
+    "@types/leaflet": "^1.9.18",
+    "@types/react": "^19.1.4",
+    "@types/react-dom": "^19.1.5",
+    "@types/react-leaflet": "^2.8.3",
+    "alpinejs": "^3.14.9",
+    "astro": "^5.7.13",
+    "html": "^1.0.0",
+    "leaflet": "^1.9.4",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0",
+    "react-leaflet": "^5.0.0",
+    "resend": "^4.5.1",
+    "sanitize": "^2.1.2",
+    "sanitize-html": "^2.17.0",
+    "swiper": "^11.2.8",
+    "tailwindcss": "^4.1.7"
+  },
+  "devDependencies": {
+    "@types/alpinejs": "^3.13.11",
+    "@types/sanitize-html": "^2.16.0"
+  }
+}

@@ -1,0 +1,72 @@
+---
+import Layout from '../layouts/Layout.astro';
+import GalleryClient from '../components/GalleryClient.jsx';
+
+// SEO CONFIG
+const pagetitle = "Gallery";
+const description = "Explore Our Work: Roofing & Renovation Gallery";
+
+// Import your custom types
+import type { PayloadResponse, GalleryDoc, TransformedImage, TransformedCategory } from '../types/payload'; // Adjust path if you named your types file differently
+
+// --- START: FETCH DATA FROM PAYLOAD ---
+const PAYLOAD_BASE_URL: string = import.meta.env.PUBLIC_PAYLOAD_API_URL || "http://localhost:3000";
+const PAYLOAD_API_ENDPOINT: string = `${PAYLOAD_BASE_URL}/galleries?depth=2`;
+
+// Initialize variables with their correct types
+let transformedImages: TransformedImage[] = [];
+let transformedCategories: TransformedCategory[] = [{ name: 'All Categories', slug: 'all' }];
+let fetchedPayloadData: PayloadResponse<GalleryDoc>; // Declare without initializing to avoid `never` initially
+
+try {
+  const response = await fetch(PAYLOAD_API_ENDPOINT);
+
+  if (!response.ok) {
+    // If the response is not OK, throw an error. This path prevents `fetchedPayloadData` from being assigned.
+    throw new Error(`HTTP error! status: ${response.status}`);
+  }
+
+  // 2. Type assertion for the fetched data
+  fetchedPayloadData = await response.json() as PayloadResponse<GalleryDoc>;
+
+  fetchedPayloadData.docs.forEach(galleryCategory => {
+    // TypeScript now knows galleryCategory is a GalleryDoc, so .title and .slug exist
+    transformedCategories.push({
+      name: galleryCategory.title,
+      slug: galleryCategory.slug
+    });
+
+    galleryCategory.images.forEach(galleryImageEntry => {
+      // TypeScript now knows galleryImageEntry is a GalleryImageEntry
+      // Ensure image property is populated and has a URL
+      if (galleryImageEntry.image && typeof galleryImageEntry.image === 'object' && galleryImageEntry.image.url) {
+        transformedImages.push({
+          id: galleryImageEntry.image.id, // Accessing .id on MediaAsset
+          src: galleryImageEntry.image.url, // Accessing .url on MediaAsset
+          category: galleryCategory.slug,
+          alt: galleryImageEntry.image.alt || galleryImageEntry.caption || galleryCategory.title // Accessing .alt on MediaAsset
+        });
+      }
+    });
+  });
+
+} catch (error) {
+  console.error("Failed to fetch gallery data from Payload:", error);
+  // It's good practice to ensure the arrays are empty or handle error states on error
+  transformedImages = [];
+  transformedCategories = [{ name: 'All Categories', slug: 'all' }];
+}
+
+// Categories data for columns (using the dynamically fetched categories)
+const columns = [
+  transformedCategories.slice(0, 1), // "All Categories"
+  transformedCategories.slice(1, 3), // 2 items
+  transformedCategories.slice(3, 5), // 2 more
+  transformedCategories.slice(5)     // Remaining items (if any)
+];
+---
+
+<Layout title={pagetitle} description={description}>
+  {/* Pass the dynamically fetched and transformed data to the client component */}
+  <GalleryClient client:load images={transformedImages} categories={transformedCategories} columns={columns} />
+</Layout>

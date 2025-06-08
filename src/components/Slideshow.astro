@@ -1,0 +1,175 @@
+---
+// src/components/Slideshow.astro
+const {
+  images = [],
+  interval = 5000,
+  arrows = true,
+  custom_arrows = false,
+  caption = true,
+  bullets = false
+} = Astro.props;
+---
+
+  <div id="slideshow-container" class="relative h-full">
+    {images.map((image, index) => (
+      <div 
+        class={`absolute inset-0 transition-opacity duration-1000 ${index === 0 ? 'opacity-100' : 'opacity-0'}`}
+        data-slide
+      >
+        <img 
+          src={image.src} 
+          alt={image.alt} 
+          class="w-full h-full object-cover"
+          loading="lazy"
+        />
+        {image.caption && caption && (
+        <div class="absolute bottom-0 left-0 right-0 bg-black/50 text-white p-4">
+            {image.caption}
+        </div>
+        )}
+      </div>
+    ))}
+  
+
+  <!-- Navigation dots -->
+    {bullets && (
+    <div class="absolute bottom-4 left-0 right-0 flex justify-center gap-2">
+        {images.map((_, index) => (
+        <button
+            class={`w-3 h-3 rounded-full ${index === 0 ? 'bg-white' : 'bg-white/50'}`}
+            aria-label={`Go to slide ${index + 1}`}
+            data-dot
+            data-index={index}
+        ></button>
+        ))}
+    </div>
+    )}
+
+  <!-- Previous/Next buttons -->
+ {arrows && (
+  <>
+    <button class="hidden md:block absolute md:left-4 top-1/2 -translate-y-1/2 text-white/80 p-2 rounded-full cursor-pointer hover:text-white/100 w-5 md:w-10" data-prev>
+        <svg width="35" height="27" viewBox="0 0 35 31" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M0 15.4967L35 0V31L0 15.4967Z" fill="currentColor"/>
+        </svg>
+    </button>
+
+    <button class="hidden md:block absolute right-4 top-1/2 -translate-y-1/2 text-white/80 p-2 rounded-full cursor-pointer hover:text-white/100  w-5 md:w-10" data-next>
+        <svg width="35" height="27" viewBox="0 0 35 31" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M0 31V0L35 15.4967" fill="currentColor"/>
+        </svg>
+    </button>
+  </>
+)}
+
+  <!-- Custom Previous/Next buttons -->
+ {custom_arrows && (
+  <>
+    <button class="hidden md:block absolute md:left-4 top-1/2 -translate-y-1/2 text-white/60 p-2 rounded-full cursor-pointer hover:text-white/100 w-5 md:w-10
+                  transition ease-in-out duration-300" data-prev>
+      <svg class="h-[23px] w-auto" viewBox="0 0 30 23" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <g clip-path="url(#clip0_1024_483)">
+          <path d="M30.1241 23.259L0.124073 8.88403" stroke="currentColor" stroke-miterlimit="10"/>
+          <path d="M0.124073 14.634L30.1241 0.259033" stroke="currentColor" stroke-miterlimit="10"/>
+        </g>
+        <defs>
+          <clipPath id="clip0_1024_483">
+            <rect width="30" height="23" fill="currentColor"/>
+          </clipPath>
+        </defs>
+      </svg>
+
+    </button>
+
+    <button class="hidden md:block absolute right-4 top-1/2 -translate-y-1/2 text-white/60 p-2 rounded-full cursor-pointer hover:text-white/100  w-5 md:w-10
+                   transition ease-in-out duration-300" data-next>
+      <svg class="h-[23px] w-auto" viewBox="0 0 30 23" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <g clip-path="url(#clip0_1024_493)">
+          <path d="M-0.124024 -0.259034L29.876 14.116" stroke="currentColor" stroke-miterlimit="10"/>
+          <path d="M29.876 8.36597L-0.124026 22.741" stroke="currentColor" stroke-miterlimit="10"/>
+        </g>
+        <defs>
+          <clipPath id="clip0_1024_493">
+            <rect width="30" height="23" fill="currentColor" transform="translate(30 23) rotate(-180)"/>
+          </clipPath>
+        </defs>
+      </svg>
+    </button>
+  </>
+)}
+</div>
+
+
+<script is:inline>
+  (function() {
+    // Get all elements
+    const container = document.currentScript.closest('div').querySelector('#slideshow-container');
+    const slides = container.querySelectorAll('[data-slide]');
+    const dots = document.querySelectorAll('[data-dot]');
+    const prevBtn = document.querySelector('[data-prev]');
+    const nextBtn = document.querySelector('[data-next]');
+    
+    // Config
+    const slideInterval = 3500;
+    let currentIndex = 0;
+    let intervalId;
+
+    // Show specific slide
+    function showSlide(index) {
+      slides.forEach((slide, i) => {
+        slide.classList.toggle('opacity-100', i === index);
+        slide.classList.toggle('opacity-0', i !== index);
+      });
+      dots.forEach((dot, i) => {
+        dot.classList.toggle('bg-white', i === index);
+        dot.classList.toggle('bg-white/50', i !== index);
+      });
+      currentIndex = index;
+    }
+
+    // Next slide action
+    function nextSlide() {
+      showSlide((currentIndex + 1) % slides.length);
+    }
+
+    // Previous slide action
+    function prevSlide() {
+      showSlide((currentIndex - 1 + slides.length) % slides.length);
+    }
+
+    // Start the automatic slideshow
+    function startInterval() {
+      intervalId = setInterval(nextSlide, slideInterval);
+    }
+
+    // Reset interval when user interacts
+    function resetInterval() {
+      clearInterval(intervalId);
+      startInterval();
+    }
+
+    // Initialize
+    if (slides.length > 0) {
+      showSlide(0);
+      startInterval();
+
+      // Event listeners
+      nextBtn?.addEventListener('click', () => {
+        nextSlide();
+        resetInterval();
+      });
+
+      prevBtn?.addEventListener('click', () => {
+        prevSlide();
+        resetInterval();
+      });
+
+      dots.forEach(dot => {
+        dot.addEventListener('click', () => {
+          showSlide(parseInt(dot.dataset.index));
+          resetInterval();
+        });
+      });
+    }
+  })();
+</script>

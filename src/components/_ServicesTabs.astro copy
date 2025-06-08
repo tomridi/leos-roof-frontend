@@ -1,0 +1,307 @@
+---
+// src/components/ServicesTabs.astro
+
+export interface Props {
+  tab1Label?: string;
+  tab2Label?: string;
+  tab1BgImage?: string;
+  tab2BgImage?: string;
+}
+
+const { 
+  tab1Label = "Tab 1", 
+  tab2Label = "Tab 2",
+  tab1BgImage = "/images/bg-section-services-tabs.webp",
+  tab2BgImage = "/images/bg-section-services-tabs-2.webp" // Default second image
+} = Astro.props;
+---
+
+<section id="tabBackgroundSection" class="bg-[url(/images/bg-section-services-tabs.webp)] bg-cover bg-center bg-no-repeat h-[730px] transition-bg duration-500 overflow-hidden">
+    <div class="container mx-auto min-h-96">
+        <div class="w-full pt-8">
+            <!-- Tab Buttons -->
+            <div class="flex" role="tablist">
+                <button
+                    id="tab1"
+                    role="tab"
+                    aria-selected="true"
+                    aria-controls="tabpanel1"
+                    class="w-1/2 px-4 py-2 focus:outline-none border-b-2 border-blue-500 text-primary text-left text-3xl"
+                    data-tab-target
+                    data-bg-image={tab1BgImage}
+                >
+                    {tab1Label}
+                </button>
+                <button
+                    id="tab2"
+                    role="tab"
+                    aria-selected="false"
+                    aria-controls="tabpanel2"
+                    class="w-1/2 px-4 py-2 focus:outline-none border-b-2 border-transparent text-primary hover:text-gray-700 text-left text-3xl"
+                    data-tab-target
+                    data-bg-image={tab2BgImage}
+                >
+                    {tab2Label}
+                </button>
+            </div>
+
+            <!-- Tab Content -->
+            <div id="tabpanel1" role="tabpanel" aria-labelledby="tab1" class="p-4">
+                <div class="grid grid-cols-4 gap-4 gap-y-15 mt-7 text-medium">
+                    <a href="/service-individual/" class="group">
+                        <div>
+                            <div class="block">
+                                <svg class="w-10 h-10 mb-5 stroke-current text-primary transition-colors duration-350 group-hover:text-white"
+                                    viewBox="0 0 38 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <g clip-path="url(#clip0_1828_384)">
+                                        <path d="M29.6356 24.6962C31.5025 24.3356 33.1619 23.3282 34.2918 21.8695C35.4216 20.4107 35.9412 18.6047 35.7498 16.8021C35.5583 14.9995 34.6695 13.3288 33.2557 12.1144C31.842 10.9 30.0043 10.2286 28.0993 10.2304H26.1635C25.6545 8.35615 24.6641 6.63146 23.2812 5.21118C21.8983 3.7909 20.1662 2.71947 18.2404 2.09311C16.3146 1.46674 14.2554 1.30504 12.2476 1.62253C10.2399 1.94001 8.34647 2.72673 6.73737 3.91207C5.12827 5.0974 3.85386 6.64424 3.02856 8.41371C2.20325 10.1832 1.85289 12.1199 2.00892 14.0499C2.16496 15.98 2.8225 17.843 3.92253 19.4717C5.02256 21.1003 6.53062 22.4437 8.31134 23.3811M20.4176 16.0752L14.2723 24.8423H23.4903L17.345 33.6095" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                    </g>
+                                    <defs>
+                                        <clipPath id="clip0_1828_384">
+                                            <rect width="36.872" height="35.0686" fill="currentColor" transform="translate(0.445312 0.0020752)"/>
+                                        </clipPath>
+                                    </defs>
+                                </svg>
+                            </div>
+                            <h3 class="font-semibold mb-2 transition-colors duration-200 group-hover:text-white">Residential Roofing</h3>
+                            <p class="transition-colors duration-200 group-hover:text-white">Protect your home with Summit County–tested roofs built to last.</p>
+                        </div>
+                    </a>
+                    <a href="/service-individual/" class="group">
+                        <div>
+                            <div class="block">
+                                <svg class="w-10 h-10 mb-5 stroke-current text-primary transition-colors duration-350 group-hover:text-white" 
+                                    viewBox="0 0 38 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M18.8969 2.92432L34.2602 12.4221M18.8969 2.92432L3.5336 12.4221M18.8969 2.92432V12.4221M34.2602 12.4221V22.6504M34.2602 12.4221L18.8969 22.6504M34.2602 22.6504L18.8969 32.1482M34.2602 22.6504L18.8969 12.4221M18.8969 32.1482L3.5336 22.6504M18.8969 32.1482V22.6504M3.5336 22.6504V12.4221M3.5336 22.6504L18.8969 12.4221M3.5336 12.4221L18.8969 22.6504" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                            </div>
+                            <h3 class="font-semibold mb-2 transition-colors duration-200 group-hover:text-white">Commercial Roofing</h3>
+                            <p class="transition-colors duration-200 group-hover:text-white">Secure your business with durable, low-maintenance roofs for harsh mountain conditions.</p>
+                        </div>
+                    </a>
+                    <a href="/service-individual/" class="group">
+                        <div>
+                            <div class="block">
+                                <svg class="w-10 h-10 mb-5 stroke-current text-primary transition-colors duration-350 group-hover:text-white" 
+                                    viewBox="0 0 34 33" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M16.9087 31.1482C25.3936 31.1482 32.272 24.6062 32.272 16.5362C32.272 8.46629 25.3936 1.92432 16.9087 1.92432C8.42374 1.92432 1.54535 8.46629 1.54535 16.5362C1.54535 24.6062 8.42374 31.1482 16.9087 31.1482Z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                    <path d="M23.4227 10.3408L20.1657 19.634L10.3946 22.7317L13.6516 13.4385L23.4227 10.3408Z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                            </div>
+                            <h3 class="font-semibold mb-2 transition-colors duration-200 group-hover:text-white">Roof Repairs</h3>
+                            <p class="transition-colors duration-200 group-hover:text-white">From leaks to storm damage, our quick repairs restore integrity and peace of mind.</p>
+                        </div>
+                    </a>
+                    <a href="/service-individual/" class="group">
+                        <div>
+                            <div class="block">
+                                <svg class="w-10 h-10 mb-5 stroke-current text-primary transition-colors duration-350 group-hover:text-white"  
+                                    viewBox="0 0 30 33" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M8.01078 5.1536L14.9243 8.9527L21.8378 5.1536M8.01078 27.919V20.3354L1.09729 16.5363M28.7513 16.5363L21.8378 20.3354V27.919M1.5121 9.17188L14.9243 16.5509L28.3365 9.17188M14.9243 31.2651V16.5363M28.7513 22.3811V10.6915C28.7507 10.179 28.6085 9.67571 28.3388 9.23203C28.0692 8.78834 27.6816 8.4199 27.2149 8.16366L16.4606 2.31889C15.9935 2.0624 15.4636 1.92737 14.9243 1.92737C14.3849 1.92737 13.8551 2.0624 13.3879 2.31889L2.63362 8.16366C2.16698 8.4199 1.77939 8.78834 1.50974 9.23203C1.24008 9.67571 1.09784 10.179 1.09729 10.6915V22.3811C1.09784 22.8935 1.24008 23.3969 1.50974 23.8405C1.77939 24.2842 2.16698 24.6527 2.63362 24.9089L13.3879 30.7537C13.8551 31.0102 14.3849 31.1452 14.9243 31.1452C15.4636 31.1452 15.9935 31.0102 16.4606 30.7537L27.2149 24.9089C27.6816 24.6527 28.0692 24.2842 28.3388 23.8405C28.6085 23.3969 28.7507 22.8935 28.7513 22.3811Z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                            </div>
+                            <h3 class="font-semibold mb-2 transition-colors duration-200 group-hover:text-white">New Construction</h3>
+                            <p class="transition-colors duration-200 group-hover:text-white">Build with confidence—our new roofs blend style, efficiency, and durability for mountain living.</p>
+                        </div>
+                    </a>
+                    <a href="/service-individual/" class="group">
+                        <div>
+                            <div class="block">
+                                <svg class="w-10 h-10 mb-5 stroke-current text-primary transition-colors duration-350 group-hover:text-white"
+                                    viewBox="0 0 38 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <g clip-path="url(#clip0_1828_384)">
+                                        <path d="M29.6356 24.6962C31.5025 24.3356 33.1619 23.3282 34.2918 21.8695C35.4216 20.4107 35.9412 18.6047 35.7498 16.8021C35.5583 14.9995 34.6695 13.3288 33.2557 12.1144C31.842 10.9 30.0043 10.2286 28.0993 10.2304H26.1635C25.6545 8.35615 24.6641 6.63146 23.2812 5.21118C21.8983 3.7909 20.1662 2.71947 18.2404 2.09311C16.3146 1.46674 14.2554 1.30504 12.2476 1.62253C10.2399 1.94001 8.34647 2.72673 6.73737 3.91207C5.12827 5.0974 3.85386 6.64424 3.02856 8.41371C2.20325 10.1832 1.85289 12.1199 2.00892 14.0499C2.16496 15.98 2.8225 17.843 3.92253 19.4717C5.02256 21.1003 6.53062 22.4437 8.31134 23.3811M20.4176 16.0752L14.2723 24.8423H23.4903L17.345 33.6095" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                    </g>
+                                    <defs>
+                                        <clipPath id="clip0_1828_384">
+                                            <rect width="36.872" height="35.0686" fill="currentColor" transform="translate(0.445312 0.0020752)"/>
+                                        </clipPath>
+                                    </defs>
+                                </svg>
+                            </div>
+                            <h3 class="font-semibold mb-2 transition-colors duration-200 group-hover:text-white">Residential Roofing</h3>
+                            <p class="transition-colors duration-200 group-hover:text-white">Protect your home with Summit County–tested roofs built to last.</p>
+                        </div>
+                    </a>
+                    <a href="/service-individual/" class="group">
+                        <div>
+                            <div class="block">
+                                <svg class="w-10 h-10 mb-5 stroke-current text-primary transition-colors duration-350 group-hover:text-white" 
+                                    viewBox="0 0 38 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M18.8969 2.92432L34.2602 12.4221M18.8969 2.92432L3.5336 12.4221M18.8969 2.92432V12.4221M34.2602 12.4221V22.6504M34.2602 12.4221L18.8969 22.6504M34.2602 22.6504L18.8969 32.1482M34.2602 22.6504L18.8969 12.4221M18.8969 32.1482L3.5336 22.6504M18.8969 32.1482V22.6504M3.5336 22.6504V12.4221M3.5336 22.6504L18.8969 12.4221M3.5336 12.4221L18.8969 22.6504" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                            </div>
+                            <h3 class="font-semibold mb-2 transition-colors duration-200 group-hover:text-white">Commercial Roofing</h3>
+                            <p class="transition-colors duration-200 group-hover:text-white">Secure your business with durable, low-maintenance roofs for harsh mountain conditions.</p>
+                        </div>
+                    </a>
+                    <a href="/service-individual/" class="group">
+                        <div>
+                            <div class="block">
+                                <svg class="w-10 h-10 mb-5 stroke-current text-primary transition-colors duration-350 group-hover:text-white" 
+                                    viewBox="0 0 34 33" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M16.9087 31.1482C25.3936 31.1482 32.272 24.6062 32.272 16.5362C32.272 8.46629 25.3936 1.92432 16.9087 1.92432C8.42374 1.92432 1.54535 8.46629 1.54535 16.5362C1.54535 24.6062 8.42374 31.1482 16.9087 31.1482Z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                    <path d="M23.4227 10.3408L20.1657 19.634L10.3946 22.7317L13.6516 13.4385L23.4227 10.3408Z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                            </div>
+                            <h3 class="font-semibold mb-2 transition-colors duration-200 group-hover:text-white">Roof Repairs</h3>
+                            <p class="transition-colors duration-200 group-hover:text-white">From leaks to storm damage, our quick repairs restore integrity and peace of mind.</p>
+                        </div>
+                    </a>
+                </div>
+            </div>
+    
+            <div id="tabpanel2" role="tabpanel" aria-labelledby="tab2" class="p-4 hidden">
+                <div class="grid grid-cols-5 gap-4 gap-y-15 mt-7 text-medium">
+                    <a href="/service-individual/" class="group">
+                        <div>
+                            <div class="block">
+                                <svg class="w-10 h-10 mb-5 stroke-current text-primary transition-colors duration-350 group-hover:text-white"
+                                    viewBox="0 0 38 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <g clip-path="url(#clip0_1828_384)">
+                                        <path d="M29.6356 24.6962C31.5025 24.3356 33.1619 23.3282 34.2918 21.8695C35.4216 20.4107 35.9412 18.6047 35.7498 16.8021C35.5583 14.9995 34.6695 13.3288 33.2557 12.1144C31.842 10.9 30.0043 10.2286 28.0993 10.2304H26.1635C25.6545 8.35615 24.6641 6.63146 23.2812 5.21118C21.8983 3.7909 20.1662 2.71947 18.2404 2.09311C16.3146 1.46674 14.2554 1.30504 12.2476 1.62253C10.2399 1.94001 8.34647 2.72673 6.73737 3.91207C5.12827 5.0974 3.85386 6.64424 3.02856 8.41371C2.20325 10.1832 1.85289 12.1199 2.00892 14.0499C2.16496 15.98 2.8225 17.843 3.92253 19.4717C5.02256 21.1003 6.53062 22.4437 8.31134 23.3811M20.4176 16.0752L14.2723 24.8423H23.4903L17.345 33.6095" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                    </g>
+                                    <defs>
+                                        <clipPath id="clip0_1828_384">
+                                            <rect width="36.872" height="35.0686" fill="currentColor" transform="translate(0.445312 0.0020752)"/>
+                                        </clipPath>
+                                    </defs>
+                                </svg>
+                            </div>
+                            <h3 class="font-semibold mb-2 transition-colors duration-200 group-hover:text-white">Kitchen & Bathroom</h3>
+                            <p class="transition-colors duration-200 group-hover:text-white">Upgrade kitchens & baths with modern design, fresh finishes, and seamless installation.</p>
+                        </div>
+                    </a>
+                    <a href="/service-individual/" class="group">
+                        <div>
+                            <div class="block">
+                                <svg class="w-10 h-10 mb-5 stroke-current text-primary transition-colors duration-350 group-hover:text-white" 
+                                    viewBox="0 0 38 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M18.8969 2.92432L34.2602 12.4221M18.8969 2.92432L3.5336 12.4221M18.8969 2.92432V12.4221M34.2602 12.4221V22.6504M34.2602 12.4221L18.8969 22.6504M34.2602 22.6504L18.8969 32.1482M34.2602 22.6504L18.8969 12.4221M18.8969 32.1482L3.5336 22.6504M18.8969 32.1482V22.6504M3.5336 22.6504V12.4221M3.5336 22.6504L18.8969 12.4221M3.5336 12.4221L18.8969 22.6504" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                            </div>
+                            <h3 class="font-semibold mb-2 transition-colors duration-200 group-hover:text-white">Basement Finishing</h3>
+                            <p class="transition-colors duration-200 group-hover:text-white">Turn an unused basement into a comfy living space or home office—transform with ease.</p>
+                        </div>
+                    </a>
+                    <a href="/service-individual/" class="group">
+                        <div>
+                            <div class="block">
+                                <svg class="w-10 h-10 mb-5 stroke-current text-primary transition-colors duration-350 group-hover:text-white" 
+                                    viewBox="0 0 34 33" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M16.9087 31.1482C25.3936 31.1482 32.272 24.6062 32.272 16.5362C32.272 8.46629 25.3936 1.92432 16.9087 1.92432C8.42374 1.92432 1.54535 8.46629 1.54535 16.5362C1.54535 24.6062 8.42374 31.1482 16.9087 31.1482Z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                    <path d="M23.4227 10.3408L20.1657 19.634L10.3946 22.7317L13.6516 13.4385L23.4227 10.3408Z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                            </div>
+                            <h3 class="font-semibold mb-2 transition-colors duration-200 group-hover:text-white">Home Renovations & Additions</h3>
+                            <p class="transition-colors duration-200 group-hover:text-white">Expand or refresh your home with cohesive renovations and additions that suit your lifestyle.</p>
+                        </div>
+                    </a>
+                    <a href="/service-individual/" class="group">
+                        <div>
+                            <div class="block">
+                                <svg class="w-10 h-10 mb-5 stroke-current text-primary transition-colors duration-350 group-hover:text-white"  
+                                    viewBox="0 0 30 33" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M8.01078 5.1536L14.9243 8.9527L21.8378 5.1536M8.01078 27.919V20.3354L1.09729 16.5363M28.7513 16.5363L21.8378 20.3354V27.919M1.5121 9.17188L14.9243 16.5509L28.3365 9.17188M14.9243 31.2651V16.5363M28.7513 22.3811V10.6915C28.7507 10.179 28.6085 9.67571 28.3388 9.23203C28.0692 8.78834 27.6816 8.4199 27.2149 8.16366L16.4606 2.31889C15.9935 2.0624 15.4636 1.92737 14.9243 1.92737C14.3849 1.92737 13.8551 2.0624 13.3879 2.31889L2.63362 8.16366C2.16698 8.4199 1.77939 8.78834 1.50974 9.23203C1.24008 9.67571 1.09784 10.179 1.09729 10.6915V22.3811C1.09784 22.8935 1.24008 23.3969 1.50974 23.8405C1.77939 24.2842 2.16698 24.6527 2.63362 24.9089L13.3879 30.7537C13.8551 31.0102 14.3849 31.1452 14.9243 31.1452C15.4636 31.1452 15.9935 31.0102 16.4606 30.7537L27.2149 24.9089C27.6816 24.6527 28.0692 24.2842 28.3388 23.8405C28.6085 23.3969 28.7507 22.8935 28.7513 22.3811Z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                            </div>
+                            <h3 class="font-semibold mb-2 transition-colors duration-200 group-hover:text-white">Flooring Installations</h3>
+                            <p class="transition-colors duration-200 group-hover:text-white">Upgrade floors with hardwood, tile, or carpet installed for beauty and lasting quality.</p>
+                        </div>
+                    </a>
+                    <a href="/service-individual/" class="group">
+                        <div>
+                            <div class="block">
+                                <svg class="w-10 h-10 mb-5 stroke-current text-primary transition-colors duration-350 group-hover:text-white"
+                                    viewBox="0 0 38 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <g clip-path="url(#clip0_1828_384)">
+                                        <path d="M29.6356 24.6962C31.5025 24.3356 33.1619 23.3282 34.2918 21.8695C35.4216 20.4107 35.9412 18.6047 35.7498 16.8021C35.5583 14.9995 34.6695 13.3288 33.2557 12.1144C31.842 10.9 30.0043 10.2286 28.0993 10.2304H26.1635C25.6545 8.35615 24.6641 6.63146 23.2812 5.21118C21.8983 3.7909 20.1662 2.71947 18.2404 2.09311C16.3146 1.46674 14.2554 1.30504 12.2476 1.62253C10.2399 1.94001 8.34647 2.72673 6.73737 3.91207C5.12827 5.0974 3.85386 6.64424 3.02856 8.41371C2.20325 10.1832 1.85289 12.1199 2.00892 14.0499C2.16496 15.98 2.8225 17.843 3.92253 19.4717C5.02256 21.1003 6.53062 22.4437 8.31134 23.3811M20.4176 16.0752L14.2723 24.8423H23.4903L17.345 33.6095" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                    </g>
+                                    <defs>
+                                        <clipPath id="clip0_1828_384">
+                                            <rect width="36.872" height="35.0686" fill="currentColor" transform="translate(0.445312 0.0020752)"/>
+                                        </clipPath>
+                                    </defs>
+                                </svg>
+                            </div>
+                            <h3 class="font-semibold mb-2 transition-colors duration-200 group-hover:text-white">Residential Roofing</h3>
+                            <p class="transition-colors duration-200 group-hover:text-white">Protect your home with Summit County–tested roofs built to last.</p>
+                        </div>
+                    </a>
+                    <a href="/service-individual/" class="group">
+                        <div>
+                            <div class="block">
+                                <svg class="w-10 h-10 mb-5 stroke-current text-primary transition-colors duration-350 group-hover:text-white" 
+                                    viewBox="0 0 38 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M18.8969 2.92432L34.2602 12.4221M18.8969 2.92432L3.5336 12.4221M18.8969 2.92432V12.4221M34.2602 12.4221V22.6504M34.2602 12.4221L18.8969 22.6504M34.2602 22.6504L18.8969 32.1482M34.2602 22.6504L18.8969 12.4221M18.8969 32.1482L3.5336 22.6504M18.8969 32.1482V22.6504M3.5336 22.6504V12.4221M3.5336 22.6504L18.8969 12.4221M3.5336 12.4221L18.8969 22.6504" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                            </div>
+                            <h3 class="font-semibold mb-2 transition-colors duration-200 group-hover:text-white">Commercial Roofing</h3>
+                            <p class="transition-colors duration-200 group-hover:text-white">Secure your business with durable, low-maintenance roofs for harsh mountain conditions.</p>
+                        </div>
+                    </a>
+                    <a href="/service-individual/" class="group">
+                        <div>
+                            <div class="block">
+                                <svg class="w-10 h-10 mb-5 stroke-current text-primary transition-colors duration-350 group-hover:text-white" 
+                                    viewBox="0 0 34 33" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M16.9087 31.1482C25.3936 31.1482 32.272 24.6062 32.272 16.5362C32.272 8.46629 25.3936 1.92432 16.9087 1.92432C8.42374 1.92432 1.54535 8.46629 1.54535 16.5362C1.54535 24.6062 8.42374 31.1482 16.9087 31.1482Z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                    <path d="M23.4227 10.3408L20.1657 19.634L10.3946 22.7317L13.6516 13.4385L23.4227 10.3408Z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                            </div>
+                            <h3 class="font-semibold mb-2 transition-colors duration-200 group-hover:text-white">Roof Repairs</h3>
+                            <p class="transition-colors duration-200 group-hover:text-white">From leaks to storm damage, our quick repairs restore integrity and peace of mind.</p>
+                        </div>
+                    </a>
+                    <a href="/service-individual/" class="group">
+                        <div>
+                            <div class="block">
+                                <svg class="w-10 h-10 mb-5 stroke-current text-primary transition-colors duration-350 group-hover:text-white"  
+                                    viewBox="0 0 30 33" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M8.01078 5.1536L14.9243 8.9527L21.8378 5.1536M8.01078 27.919V20.3354L1.09729 16.5363M28.7513 16.5363L21.8378 20.3354V27.919M1.5121 9.17188L14.9243 16.5509L28.3365 9.17188M14.9243 31.2651V16.5363M28.7513 22.3811V10.6915C28.7507 10.179 28.6085 9.67571 28.3388 9.23203C28.0692 8.78834 27.6816 8.4199 27.2149 8.16366L16.4606 2.31889C15.9935 2.0624 15.4636 1.92737 14.9243 1.92737C14.3849 1.92737 13.8551 2.0624 13.3879 2.31889L2.63362 8.16366C2.16698 8.4199 1.77939 8.78834 1.50974 9.23203C1.24008 9.67571 1.09784 10.179 1.09729 10.6915V22.3811C1.09784 22.8935 1.24008 23.3969 1.50974 23.8405C1.77939 24.2842 2.16698 24.6527 2.63362 24.9089L13.3879 30.7537C13.8551 31.0102 14.3849 31.1452 14.9243 31.1452C15.4636 31.1452 15.9935 31.0102 16.4606 30.7537L27.2149 24.9089C27.6816 24.6527 28.0692 24.2842 28.3388 23.8405C28.6085 23.3969 28.7507 22.8935 28.7513 22.3811Z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                            </div>
+                            <h3 class="font-semibold mb-2 transition-colors duration-200 group-hover:text-white">New Construction</h3>
+                            <p class="transition-colors duration-200 group-hover:text-white">Build with confidence—our new roofs blend style, efficiency, and durability for mountain living.</p>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script is:inline>
+  document.addEventListener('DOMContentLoaded', () => {
+    const tabs = document.querySelectorAll('[data-tab-target]');
+    const backgroundSection = document.getElementById('tabBackgroundSection');
+    
+    tabs.forEach(tab => {
+      tab.addEventListener('click', () => {
+        // Switch tab content
+        const targetId = tab.getAttribute('aria-controls');
+        const targetPanel = document.getElementById(targetId);
+        
+        document.querySelectorAll('[role="tabpanel"]').forEach(panel => {
+          panel.classList.add('hidden');
+        });
+        targetPanel.classList.remove('hidden');
+        
+        // Update tab styles
+        document.querySelectorAll('[role="tab"]').forEach(t => {
+          t.setAttribute('aria-selected', 'false');
+          t.classList.remove('border-blue-500', 'text-blue-600');
+          t.classList.add('border-transparent', 'text-gray-500');
+        });
+        
+        tab.setAttribute('aria-selected', 'true');
+        tab.classList.add('border-blue-500', 'text-blue-600');
+        tab.classList.remove('border-transparent', 'text-gray-500');
+        
+        // Change background image
+        const bgImage = tab.getAttribute('data-bg-image');
+        backgroundSection.style.backgroundImage = `url(${bgImage})`;
+      });
+    });
+  });
+</script>

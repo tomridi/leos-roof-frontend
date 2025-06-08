@@ -1,0 +1,178 @@
+---
+import Layout from '../layouts/Layout.astro';
+
+//About Components
+import StatsSection from '../components/StatsSection.jsx';
+import Timeline from '../components/Timeline.jsx';
+import Team from '../components/Team.tsx';
+
+//SEO CONFIG PAGE BY PAGE
+const pagetitle = "About";
+const description = "We believe your roof is more than just a covering—it’s a promise to protect your home and the people you love.Your One-Stop Solution for Roofing & Renovations.";
+---
+
+<Layout title={pagetitle} description={description}>
+    <div class="flex flex-col h-[360px] sm:h-[50vh] mt-15 md:mt-25 overflow-hidden">
+        <img src="/images/about-hero.webp" alt="Hero Image" class="w-full h-full object-cover" />	
+    </div>
+    <section class="flex flex-col bg-gray-light ">
+        <div class="flex-grow container mx-auto
+        text-left px-4 md:px-0 py-15 
+        content-start">
+            <h1 class="leading-[1.4] md:font-thin text-xl md:text-4xl md:max-w-3/4">
+                Our Story
+            </h1>
+            <p class="font-light text-sm md:text-medium md:max-w-3/4 inline-block mt-6">
+                At <b>Leo’s Roofing & Remodeling,</b> we believe your roof is more than just a covering—it’s a promise to protect your home and the people you love. Since 2017, we’ve been committed to serving our neighbors in Summit County with top-tier roofing solutions that stand up to Colorado’s extreme weather.
+            </p>
+            <p class="font-light text-sm md:text-medium md:max-w-3/4 inline-block mt-6">
+                Our founder, Leo Villagrana, brings more than 20 years of hands-on roofing experience to every project. After honing his craft in the harshest mountain conditions, Leo built this company with a simple vision: treat every roof like it’s our own. This philosophy shows up in everything we do, from how we choose our materials to the way we communicate with our customers.
+            </p>
+            <p class="font-light text-sm md:text-medium md:max-w-3/4 inline-block mt-6">
+                When you partner with Leo’s Roofing & Remodeling, you’re not just getting a new roof—you’re getting a team that truly cares about protecting what matters most to you.
+            </p>
+        </div>
+    </section>
+    <StatsSection client:visible />
+    <section class="bg-primary px-4 py-10 md:p-25">  
+        <div class="container mx-auto text-white font-thin">
+            <h2 class="leading-[1.4] text-medium md:text-4xl md:max-w-3/4 font-semibold md:font-thin">
+                Why Choose Leo’s Roofing & Remodeling?
+            </h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-10 mt-15 text-xl md:text-2xl">
+            <!-- Column 1 -->
+                <div class="flex flex-col space-y-12">
+                    <!-- Item 1 -->
+                    <div class="flex items-start gap-6">
+                        <span class="flex-shrink-0 flex items-center justify-center w-10 h-10 rounded-full bg-accent text-white font-light text-base md:text-lg">
+                            1
+                        </span>
+                        <div>
+                            <h3 class="mb-1 font-semibold md:font-thin text-base md:text-2xl">Local Expertise</h3>
+                            <p class="text-sm md:text-base font-light opacity-90 leading-relaxed">
+                            With two decades of experience in Summit County, we understand exactly how to protect your home against heavy snowfall, ice, and high winds.
+                            </p>
+                        </div>
+                    </div>
+                    <!-- Item 2 -->
+                    <div class="flex items-start gap-6">
+                        <span class="flex-shrink-0 flex items-center justify-center w-10 h-10 rounded-full bg-accent text-white font-light text-lg">
+                            2
+                        </span>
+                        <div>
+                            <h3 class="mb-1 font-semibold md:font-thin text-base md:text-2xl">Comprehensive Services</h3>
+                           <p class="text-sm md:text-base font-light opacity-90 leading-relaxed">
+                            From residential and commercial roofing to custom metal work and snow removal, we handle all your needs under one roof.
+                            </p>
+                        </div>
+                    </div>
+                    <!-- Item 3 -->
+                    <div class="flex items-start gap-6">
+                        <span class="flex-shrink-0 flex items-center justify-center w-10 h-10 rounded-full bg-accent text-white font-light text-lg">
+                            3
+                        </span>
+                        <div>
+                            <h3 class="mb-1 font-semibold md:font-thin text-base md:text-2xl">Proven Protection</h3>
+                           <p class="text-sm md:text-base font-light opacity-90 leading-relaxed">
+                            We back our work with a 5-year workmanship warranty, going above and beyond industry standards.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+            <!-- Column 2 -->
+                <div class="flex flex-col space-y-12">
+                    <!-- Item 4 -->
+                    <div class="flex items-start gap-6">
+                        <span class="flex-shrink-0 flex items-center justify-center w-10 h-10 rounded-full bg-accent text-white font-light text-lg">
+                            4
+                        </span>
+                        <div>
+                            <h3 class="mb-1 font-semibold md:font-thin text-base md:text-2xl">Hands-On Approach</h3>
+                           <p class="text-sm md:text-base font-light opacity-90 leading-relaxed">
+                            From the first call to the final inspection, Leo and our dedicated team are hands-on—ensuring no detail is overlooked.
+                            </p>
+                        </div>
+                    </div>
+                    <!-- Item 5 -->
+                    <div class="flex items-start gap-6">
+                        <span class="flex-shrink-0 flex items-center justify-center w-10 h-10 rounded-full bg-accent text-white font-light text-lg">
+                            5
+                        </span>
+                        <div>
+                            <h3 class="mb-1 font-semibold md:font-thin text-base md:text-2xl">Trust & Transparency</h3>
+                           <p class="text-sm md:text-base font-light opacity-90 leading-relaxed">
+                            Honesty and clear communication are at the core of what we do. From your first estimate to project completion, we keep you informed—no surprises, just quality work you can rely on.
+                            </p>
+                        </div>
+                    </div>
+                    <!-- Item 6 -->
+                    <div class="flex items-start gap-6">
+                        <span class="flex-shrink-0 flex items-center justify-center w-10 h-10 rounded-full bg-accent text-white font-light text-lg">
+                            6
+                        </span>
+                        <div>
+                            <h3 class="mb-1 font-semibold md:font-thin text-base md:text-2xl">Fast Response Times</h3>
+                           <p class="text-sm md:text-base font-light opacity-90 leading-relaxed">
+                            Whether you need an inspection or an urgent fix, we respond promptly to protect your home and prevent costly damage.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <div class="flex flex-col h-[50vh] overflow-hidden">
+        <img src="/images/about-gloves-bg.webp" alt="Hero Image" class="w-full h-full object-cover" />	
+    </div>
+    <Timeline client:load/>
+    <section class="bg-gray-100 py-20 px-4 md:px-8">
+    <div class="max-w-6xl mx-auto">
+        <h2 class="leading-[1.4] font-thin text-xl md:text-4xl max-w-3/4">
+            Our Team
+        </h2>
+        <Team client:load />
+    </section>
+    <section class="py-15 md:py-25 px-4 md:px-8">
+        <div class="max-w-6xl mx-auto text-base md:text-medium">
+            <h2 class="leading-[1.4] md:font-thin text-white text-medium md:text-4xl max-w-3/4">
+                Safety Matters
+            </h2>
+            <div class="grid md:grid-cols-3 gap-4 mt-10 md:mt-6 text-white">
+                <!-- Item 1 -->
+                <div class="flex flex-row space-x-4 md:flex-col md:space-x-0 md:space-y-2">
+                    <div class="flex-shrink-0">
+                        <img src="/images/icon-alert.png" alt="Alert Icon" class="w-[30px] md:w-12 h-auto">
+                    </div>
+                    <div class="min-w-0">
+                        <span class="block font-semibold md:mt-4">On-Site Safety</span>
+                        <span class="font-thin">Safety is our top priority, from OSHA compliance to insurance. Briefings and fall-protection ensure everyone stays secure.</span>
+                    </div>
+                </div>
+                
+                <!-- Item 2 -->
+                <div class="flex flex-row space-x-4 md:flex-col md:space-x-0 md:space-y-2">
+                    <div class="flex-shrink-0">
+                        <img src="/images/icon-alert-triangle.png" alt="Alert Icon" class="w-[30px] md:w-12 h-auto">
+                    </div>
+                    <div class="min-w-0">
+                        <span class="block font-semibold md:mt-4">Property & Weather Protection</span>
+                        <span class="font-thin">Tarps, sealed materials, and careful scheduling shield your home from debris or sudden storms. This proactive approach limits disruption and keeps your roof secure.</span>
+                    </div>
+                </div>
+                
+                <!-- Item 3 -->
+                <div class="flex flex-row space-x-4 md:flex-col md:space-x-0 md:space-y-2">
+                    <div class="flex-shrink-0">
+                        <img src="/images/icon-award.png" alt="Alert Icon" class="w-[30px] md:w-12 h-auto">
+                    </div>
+                    <div class="min-w-0">
+                        <span class="block font-semibold md:mt-4">Our Community Standards</span>
+                        <span class="font-thin">Sustainable practices matter. We recycle materials, follow local codes, and protect our mountain environment we all call home.</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+</Layout>

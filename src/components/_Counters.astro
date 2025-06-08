@@ -1,0 +1,78 @@
+<div class="container mx-auto min-h-[335px] py-20 overflow-hidden">
+  <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+    <div class="flex flex-col justify-center items-center">
+      <div class="bg-[url('/images/shape-bg.svg')] bg-no-repeat bg-center bg-contain h-[120px] w-[250px] flex justify-center items-center text-white text-5xl font-bold">
+        <span class="counter" data-target="126">0</span>+
+      </div>
+      <div class="text-white mt-4 text-2xl">Roof Installed</div>
+    </div>
+
+    <div class="flex flex-col justify-center items-center">
+      <div class="bg-[url('/images/shape-bg.svg')] bg-no-repeat bg-center bg-contain h-[120px] w-[250px] flex justify-center items-center text-white text-5xl font-bold">
+        <span class="counter" data-target="86">0</span>+
+      </div>
+      <div class="text-white mt-4 text-2xl">Roofs Fixed</div>
+    </div>
+
+    <div class="flex flex-col justify-center items-center">
+      <div class="bg-[url('/images/shape-bg.svg')] bg-no-repeat bg-center bg-contain h-[120px] w-[250px] flex justify-center items-center text-white text-5xl font-bold">
+        <span class="counter" data-target="56">0</span>+
+      </div>
+      <div class="text-white mt-4 text-2xl">Gutters Fixed</div>
+    </div>
+
+    <div class="flex flex-col justify-center items-center">
+      <div class="bg-[url('/images/shape-bg.svg')] bg-no-repeat bg-center bg-contain h-[120px] w-[250px] flex justify-center items-center text-white text-5xl font-bold">
+        <span class="counter" data-target="24">0</span>+
+      </div>
+      <div class="text-white mt-4 text-2xl">Remodels</div>
+    </div>
+  </div>
+</div>
+
+<script is:inline>
+document.addEventListener('DOMContentLoaded', () => {
+  const counters = document.querySelectorAll('.counter');
+  
+  // Different durations for each counter (in milliseconds)
+  const durations = [2800, 3200, 3500, 2000]; // Adjust these values as needed
+  
+  const animateCounters = () => {
+    counters.forEach((counter, index) => {
+      const target = +counter.getAttribute('data-target');
+      const duration = durations[index] || 2000; // Fallback duration
+      const startTime = performance.now();
+      
+      const updateCounter = (currentTime) => {
+        const elapsedTime = currentTime - startTime;
+        const progress = Math.min(elapsedTime / duration, 1);
+        const currentValue = Math.floor(progress * target);
+        
+        counter.textContent = currentValue;
+        
+        if (progress < 1) {
+          requestAnimationFrame(updateCounter);
+        } else {
+          counter.textContent = target; // Ensure exact target value
+        }
+      };
+      
+      requestAnimationFrame(updateCounter);
+    });
+  };
+  
+  // Start animation when counters are in viewport
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        animateCounters();
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.5 });
+  
+  counters.forEach(counter => {
+    observer.observe(counter.parentElement);
+  });
+});
+</script>

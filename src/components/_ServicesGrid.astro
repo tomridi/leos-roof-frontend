@@ -1,0 +1,177 @@
+---
+// src/components/ServicesTabs.astro
+
+export interface Props {
+  tab1Label?: string;
+  tab2Label?: string;
+}
+
+const { 
+  tab1Label = "Tab 1", 
+  tab2Label = "Tab 2",
+} = Astro.props;
+
+const servicesRoofing = [
+  {
+    title: "Residential Roofing",
+    description: "Protect your home with Summit County–tested roofs built to last.",
+    icon: "/images/icon-cloud-lighting.svg", // or use the SVG code directly
+    image: "/images/services-corevalues-bg.webp"
+  },
+  {
+    title: "Commercial Roofing",
+    description: "Secure your business with durable, low-maintenance roofs for harsh mountain conditions.",
+    icon: "/images/icon-codepen.svg", // or use the SVG code directly
+    image: "/images/location-placeholder.webp"
+  },
+  {
+    title: "Residential Roofing",
+    description: "Protect your home with Summit County–tested roofs built to last.",
+    icon: "/images/icon-cloud-lighting.svg", // or use the SVG code directly
+    image: "/images/services-corevalues-bg.webp"
+  },
+  {
+    title: "Commercial Roofing",
+    description: "Secure your business with durable, low-maintenance roofs for harsh mountain conditions.",
+    icon: "/images/icon-codepen.svg", // or use the SVG code directly
+    image: "/images/location-placeholder.webp"
+  },
+];
+const servicesRemodeling = [
+  {
+    title: "Residential Roofing",
+    description: "Protect your home with Summit County–tested roofs built to last.",
+    icon: "/images/icon-cloud-lighting.svg", // or use the SVG code directly
+    image: "/images/services-corevalues-bg.webp"
+  },
+  {
+    title: "Commercial Roofing",
+    description: "Secure your business with durable, low-maintenance roofs for harsh mountain conditions.",
+    icon: "/images/icon-codepen.svg", // or use the SVG code directly
+    image: "/images/location-placeholder.webp"
+  },
+];
+---
+
+<section id="tabBackgroundSection" class=" bg-gray-light"">
+    <div class="container mx-auto mb-20">
+        <div class="w-full pt">
+            <!-- Tab Buttons -->
+            <div class="flex" role="tablist">
+            <button
+                id="tab1"
+                role="tab"
+                aria-selected="true"
+                aria-controls="tabpanel1"
+                class="w-1/2 focus:outline-none border-b-2 border-blue-500 text-primary hover:text-background cursor-pointer text-left text-3xl flex items-center space-x-2"
+                data-tab-target
+            >
+                <span>{tab1Label}</span>
+                <svg class="h-6 rotate-90 text-white" viewBox="0 0 35 31" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M0 31V0L35 15.4967" fill="currentColor"/>
+                </svg>
+            </button>
+                <button
+                    id="tab2"
+                    role="tab"
+                    aria-selected="false"
+                    aria-controls="tabpanel2"
+                    class="w-1/2 px-4 py-2 focus:outline-none border-b-2 border-transparent text-primary hover:text-background cursor-pointer text-left text-3xl flex items-center space-x-2"
+                    data-tab-target
+                >
+                    <span>{tab2Label}</span>
+                    <svg class="h-6 rotate-90 text-white" viewBox="0 0 35 31" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M0 31V0L35 15.4967" fill="currentColor"/>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </div>
+        <!-- Tab Content -->
+        <div id="tabpanel1" role="tabpanel" aria-labelledby="tab1">
+            <div class="bg-light-blue text-center text-white p-4 uppercase text-2xl tracking-[0.8em]">
+                {tab1Label}
+            </div>
+            {/* Full-width background container */}
+            <div class="w-screen relative left-1/2 right-1/2 -ml-[50vw] -mr-[50vw]">
+            {/* Process services in pairs */}
+            {Array.from({ length: Math.ceil(servicesRoofing.length / 2) }).map((_, rowIndex) => (
+                <div class={`w-full ${rowIndex % 2 === 0 ? 'bg-white' : 'bg-light-gray'}`}>
+                {/* Content container */}
+                    <div class="container mx-auto p-4">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 py-8"> {/* Two cards per row on desktop */}
+                        {/* Render two services (or one if last item) */}
+                        {servicesRoofing.slice(rowIndex * 2, rowIndex * 2 + 2).map((service) => (
+                            <div class="flex gap-8 items-start">
+                                <a href="/service-individual/" class="flex-1">
+                                    <div class="flex flex-col justify-center mb-5 group">
+                                        {/* SVG Icon */}
+                                            
+                                            <img src={service.icon} class="w-8 h-auto mb-5">
+
+                                        <h3 class="font-semibold mb-2 transition-colors duration-200 group-hover:text-background">
+                                            {service.title}
+                                        </h3>
+                                        <p class="transition-colors duration-200 group-hover:text-background">
+                                            {service.description}
+                                        </p>
+                                    </div>
+                                </a>
+                                    <div class="flex-1">
+                                        <img 
+                                        src={service.image} 
+                                        alt={service.title} 
+                                        class="w-[190px] h-[170px] object-cover mb-5 transition-transform duration-200 hover:scale-105"
+                                        />
+                                    </div>
+                            </div>
+                        ))}
+                        </div>
+                    </div>
+                </div>
+            ))}
+            </div>
+        </div>
+
+<!-- Tab Content -->
+        <div id="tabpanel2" role="tabpanel" aria-labelledby="tab2" class="p-4 hidden">
+            <div class="bg-light-blue text-center text-white p-4 uppercase text-2xl tracking-[0.8em]">
+                {tab2Label}
+            </div>
+        </div>
+</section>
+
+<script is:inline>
+  document.addEventListener('DOMContentLoaded', () => {
+    const tabs = document.querySelectorAll('[data-tab-target]');
+    const backgroundSection = document.getElementById('tabBackgroundSection');
+    
+    tabs.forEach(tab => {
+      tab.addEventListener('click', () => {
+        // Switch tab content
+        const targetId = tab.getAttribute('aria-controls');
+        const targetPanel = document.getElementById(targetId);
+        
+        document.querySelectorAll('[role="tabpanel"]').forEach(panel => {
+          panel.classList.add('hidden');
+        });
+        targetPanel.classList.remove('hidden');
+        
+        // Update tab styles
+        document.querySelectorAll('[role="tab"]').forEach(t => {
+          t.setAttribute('aria-selected', 'false');
+          t.classList.remove('border-blue-500', 'text-blue-600');
+          t.classList.add('border-transparent', 'text-gray-500');
+        });
+        
+        tab.setAttribute('aria-selected', 'true');
+        tab.classList.add('border-blue-500', 'text-blue-600');
+        tab.classList.remove('border-transparent', 'text-gray-500');
+        
+        // Change background image
+        const bgImage = tab.getAttribute('data-bg-image');
+        backgroundSection.style.backgroundImage = `url(${bgImage})`;
+      });
+    });
+  });
+</script>

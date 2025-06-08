@@ -1,0 +1,63 @@
+---
+import Layout from '../layouts/Layout.astro';
+
+//Services Components
+import EmergencyCall from '../components/EmergencyCall.astro';
+import ServicesSection from '../components/ServicesSection.astro';
+
+//SEO CONFIG PAGE BY PAGE
+const pagetitle = "Services";
+const description = "Your One-Stop Solution for Roofing & Renovations";
+---
+
+<Layout title={pagetitle} description={description}>
+    <div class="flex flex-col h-[360px] sm:h-[50vh] mt-15 md:mt-25 overflow-hidden">
+        <img src="/images/services-hero.webp" alt="Hero Image" class="w-full h-full object-cover" />	
+    </div>
+    <section class="flex flex-col bg-gray-light ">
+        <div class="flex-grow container mx-auto
+        text-left px-4 md:px-0 py-15 
+        content-start">
+            <h1 class="font-semibold text-2xl">Your One-Stop Solution for Roofing & Renovation</h1>
+            <span class="font-thin text-medium max-w-[750px] inline-block mt-2">We combine decades of mountain roofing expertise with full-scale remodeling services. Whether you need a new roof, a kitchen refresh, or a whole-home upgrade, our team handles it all—bringing every aspect of your project together with one trusted team.</span>
+        </div>
+    </section>
+    <ServicesSection />
+    <EmergencyCall />
+    <section class="bg-[url(/images/services-corevalues-bg.webp)] bg-cover bg-center bg-no-repeat px-4 py-10 md:p-15 md:min-h-[600px]">  
+        <div class="container mx-auto text-white font-thin">
+            <h2 class="leading-[1.4] text-medium md:text-4xl max-w-3/4">
+                Our Core Values
+            </h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-10 md:text-2xl">
+            <!-- Column 1 -->
+                <div class="flex flex-col space-y-8">
+                    <div class="flex items-center gap-6">
+                        <span class="flex items-center justify-center w-10 h-10 rounded-full bg-black text-white font-light">1</span>
+                        <span>Integrity</span>
+                    </div>
+                    <div class="flex items-center gap-6">
+                        <span class="flex items-center justify-center w-10 h-10 rounded-full bg-black text-white font-light">2</span>
+                        <span>Quality Craftmanship</span>
+                    </div>
+                    <div class="flex items-center gap-6">
+                        <span class="flex items-center justify-center w-10 h-10 rounded-full bg-black text-white font-light">3</span>
+                        <span>Customer Commitment</span>
+                    </div>
+                </div>
+
+            <!-- Column 2 -->
+                <div class="flex flex-col space-y-8">
+                    <div class="flex items-center gap-6">
+                        <span class="flex items-center justify-center w-10 h-10 rounded-full bg-black text-white font-light">4</span>
+                        <span>Community Focus</span>
+                    </div>
+                    <div class="flex items-center gap-6">
+                        <span class="flex items-center justify-center w-10 h-10 rounded-full bg-black text-white font-light">5</span>
+                        <span>Reliability</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</Layout>

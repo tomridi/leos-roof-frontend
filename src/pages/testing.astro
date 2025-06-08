@@ -1,0 +1,60 @@
+---
+// src/pages/services.astro
+// Import the renamed types
+import { Image } from 'astro:assets';
+
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="generator" content={Astro.generator} />
+    <title>Categories & Services (IDs Only)</title>
+  </head>
+  <body>
+    <div class="[mask-image:{images/services-vector.svg}]">
+    
+    </div>
+
+<div class="relative w-[800px] h-[400px] overflow-hidden group">
+    <svg class="absolute inset-0 w-full h-full" viewBox="0 0 1000 100">
+        <mask id="tabs-mask-css" mask-type="alpha">
+            <path d="M31.2699 38.28L-6.10352e-05 88.95H984.5V0H99.8899C71.9199 0 45.9599 14.48 31.2699 38.28Z" fill="white"/>
+        </mask>
+        <image id="maskedImage" href="/images/bg-section-services-remodeling.webp" mask="url(#tabs-mask-css)" class="w-full h-full object-cover"/>
+        <text x="500" y="60" text-anchor="middle" alignment-baseline="middle" class="fill-white text-4xl font-bold">
+          <tspan style="font-size: 40px;">Services</tspan>
+        </text>
+    </svg>
+</div>
+
+
+  </body>
+</html>
+
+<style>
+  /* In your main CSS file (e.g., src/input.css) */
+
+#maskedImage {
+  /* Initial state: image is shifted right, effectively "hidden" by the mask */
+  transform: translateX(10%); /* Adjust based on your mask's width */
+  transition: transform 1s ease-out; /* Smooth transition for the animation */
+}
+
+/* On hover of the parent .group */
+.group:hover #maskedImage {
+  /* Final state: image slides into its natural position */
+  transform: translateX(0);
+}
+
+/* Important: The path inside the mask must be white for mask-type="alpha" to work as expected */
+/* Ensure the fill is pure white inside the mask. */
+/* Tailwind's `fill-currentColor` would make it amber-50/20 if applied to the mask element, which might not be full white. */
+/* So, either ensure the mask's fill is white or directly set fill="white" on the path. */
+#tabs-mask-css path {
+  fill: white;
+}
+</style>

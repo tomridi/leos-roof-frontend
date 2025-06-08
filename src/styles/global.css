@@ -1,0 +1,97 @@
+@import "tailwindcss";
+
+@font-face {
+  font-family: 'Franklin Gothic Book';
+  src: url('/fonts/Franklin Gothic Book.ttf') format('ttf');
+  
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Franklin Gothic Demi';
+  src: url('/fonts/FRANKLINGOTT-DEMI.TTF') format('ttf');
+  font-style: normal;
+  font-display: swap;
+}
+
+@theme {
+  --breakpoint-*: initial;
+  --breakpoint-sm: 480px;
+  --breakpoint-md: 768px;
+  --breakpoint-lg: 1140px; 
+
+  --color-primary: #001E33; /* Dark Blue */
+  --color-white: #FFFFFF; /* White */
+  --color-accent: #EB6E50;
+  --color-background: #B0978A; /* Light Brown (Background) */
+  --color-text: #001E33;
+  --color-text-light: #A6AFB5;
+  --color-light-blue: #A0C7E6;
+  --color-gray: #535B60;
+  --color-gray-light: #EAEAEA;
+
+  --color-timeline: #81B8E2;
+
+  --color-badge: #54789D;
+
+  --color-light-brown: #B0978A;
+
+  --font-franklin: 'Libre Franklin Variable', sans-serif;
+  --font-manrope: 'Manrope', sans-serif;
+  --font-gothic: 'Franklin Gothic Book', sans-serif;
+  --font-gothic-demi: 'Franklin Gothic Demi', sans-serif;
+
+  --tracking-wider: 0.125rem;
+  --line-height-base: 2; /* This will generate a 'leading-base' utility */
+
+  --line-height-small: 1.063rem; /*17 px */
+
+  --text-medium: 1.2rem; /*20 px */
+
+}
+
+#logo-text {
+  transition: opacity 300ms ease-in-out;
+}
+
+@keyframes subtleParallax {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-15px);
+  }
+}
+.parallax-img {
+  animation: subtleParallax 3s cubic-bezier(0.5, 0.1, 0.25, 1) infinite;
+}
+
+ol.timeline li {
+  /* Initial hidden state */
+  opacity: 0;
+  transform: translateX(-30px);
+  /* Apply transition for the animation */
+  transition: opacity 600ms ease-out, transform 600ms ease-out; /* Match your animationDuration */
+}
+
+        .read-more-wrapper {
+          position: relative;
+        }
+        .read-more-content {
+          display: none;
+        }
+        .read-more-content.visible {
+          display: inline; /* Changed from block to inline for seamless text flow */
+          animation: fadeIn 0.3s ease-in;
+        }
+        @keyframes fadeIn {
+          from { opacity: 0; }
+          to { opacity: 1; }
+        }
+
+    .list-bullet {
+        list-style-type: disc;
+        margin-left: 1.5rem; /* Adjust as needed */
+        margin-top: 0.5rem;
+    }

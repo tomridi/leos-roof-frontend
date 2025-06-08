@@ -1,0 +1,74 @@
+---
+import { slugify } from '../utils/slugify';
+import type { Locations } from '../types/payload';
+import Layout from '../layouts/Layout.astro';
+
+// Fetch from Payload
+const PAYLOAD_BASE_URL = import.meta.env.PUBLIC_PAYLOAD_API_URL;
+const LOCATIONS_API = `${PAYLOAD_BASE_URL}/locations?depth=1&limit=100`;
+
+let locations: {
+  id: number;
+  title: string;
+  href: string;
+  thumbnail: string;
+}[] = [];
+
+try {
+  const response = await fetch(LOCATIONS_API);
+  if (!response.ok) throw new Error(`Failed to fetch locations: ${response.statusText}`);
+  const data = await response.json();
+
+  locations = data.docs.map((loc: Locations) => ({
+    id: loc.id,
+    title: loc.title,
+    href: `/locations/${slugify(loc.title)}`,
+    thumbnail: loc.thumbnail?.url || '/images/location-placeholder.webp',
+  }));
+} catch (error) {
+  console.error('Error loading locations:', error);
+}
+
+
+//SEO CONFIG PAGE BY PAGE
+const pagetitle = "Location";
+const description = "Proudly Serving Summit County—and Beyond.";
+---
+<Layout title={pagetitle} description={description}>
+
+    <section class="bg-primary py-30 md:py-45 px-4">  
+        <div class="container mx-auto text-white font-thin">
+            <h1 class="leading-[1.4] text-xl md:text-4xl max-w-3/4">
+                Our Locations
+            </h1>
+            <div class="flex-grow container mx-auto
+            text-left md:px-0 py-10 
+            content-start">
+                <h2 class="font-semibold md:text-2xl">
+                    Proudly Serving Summit County—and Beyond.
+                </h2>
+                <span class="md:text-medium inline-block mt-2">
+                    Summit County is our home base, but our commitment to quality roofing and remodeling extends throughout the region. We bring our mountain-tested methods to every job, adapting to each home's needs while delivering the same craftsmanship, integrity, and hands-on service we're known for—no matter where the work takes us
+                </span>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-y-8 gap-x-4 mt-10 md:text-2xl">
+                <!-- Column 1 -->
+                {locations.map(loc => (
+                <a href={loc.href}>
+                <div class="flex flex-col space-y-3">
+                    <div class="relative">
+                    <img
+                    src={loc.thumbnail}
+                    alt={loc.title}
+                    class="object-cover hover:brightness-50 transition-all duration-300 md:w-[360px] w-full md:h-[220px] rounded-lg"
+                    
+                    />
+                    </div>
+                    <span class="font-semibold text-medium">{loc.title}</span>
+                </div>
+                </a>
+                ))}
+        </div>
+    </section>
+
+</Layout>

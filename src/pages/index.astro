@@ -1,0 +1,65 @@
+---
+import Layout from '../layouts/Layout.astro';
+
+//Homepage Components
+import InquireForm from '../components/InquireForm.astro';
+import InsuranceClaims from '../components/InsuranceClaims.astro';
+import Timeline from '../components/Timeline.jsx';
+import EmergencyCall from '../components/EmergencyCall.astro';
+import StatsSection from '../components/StatsSection.jsx';
+import Testimonial from '../components/Testimonial.astro';
+
+import ServicesHomepage from '../components/ServicesHomepage.astro';
+
+//SEO CONFIG PAGE BY PAGE
+const pagetitle = "Home";
+const description = "Learn about our 20+ years of roofing experience.";
+
+import Slideshow from '../components/Slideshow.tsx';
+import Services from './services.astro';
+
+const images = [
+  { src: '/images/homepage-hero-01.webp', alt: 'Colorado Roofing Solutions', caption: 'Residential roofing excellence' },
+  { src: '/images/homepage-hero-02.webp', alt: 'Lake', caption: 'Lake Colorado' },
+];
+---
+
+<Layout title={pagetitle} description={description}>
+	<div class="flex flex-col h-[360px] sm:h-[50vh] mt-15 md:mt-25 overflow-hidden">
+		<Slideshow images={images} interval={3000} arrows={false} custom_arrows={true} caption={false} bullets={false} client:load />
+    </div>
+	<section class="flex-grow container mx-auto text-left px-4 md:px-0 py-10 md:py-15 content-start">
+		<h1 class="text-white font-thin leading-[1.4] text-medium md:text-4xl md:max-w-[840px]">
+				Summit County's Trusted Roofing Experts with
+				<span class="whitespace-nowrap md:whitespace-pre">20+ Years of Experience.</span>
+				Residential & Commercial Roofing Solutions Built to Withstand Colorado's Harshest Weather.
+		</h1>
+		<div class="mt-10">
+				<InquireForm />
+		</div>
+	</section>
+	<section class="bg-primary md:mh-[700px] content-center relative overflow-hidden px-4">
+		<div class="container mx-auto text-left py-15 md:py-8">
+			<div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-15 md:gap-20 md:text-medium">
+				<div class="flex flex-col items-left md:items-start text-left text-white md:justify-center">
+					<div class="font-semibold mb-2">
+						Why Choose Leo's<br class="md:hidden"> <span class="md:whitespace-nowrap">Roofing and Remodeling?</span>
+					</div> 
+					<span class="font-thin">Leo's Roofing & Remodeling is built on two decades of experience right here in Summit County—so we know exactly how to protect your home against heavy snowfall, ice, and high winds. We offer hands-on service, a full range of roofing and remodeling solutions, plus a 5-year workmanship warranty for added peace of mind. When you need us—whether it's a quick inspection or an urgent fix—were always ready to help.</span>
+				</div>
+				<div class="flex justify-end md:text-left">
+					<img src="/images/leo-portrait.jpg" alt="Leo" class="h-auto object-cover rounded-3xl" />
+				</div>
+			</div>
+			<div class="absolute bottom-4 md:bottom-15 left-1/2 transform -translate-x-1/2">
+				<img src="/images/since-2017.svg" alt="Since 2017" class="h-[57px] md:h-auto object-cover parallax-img" />
+			</div>
+		</div>
+	</section>
+    <ServicesHomepage />
+    <Timeline client:visible />
+    <EmergencyCall />
+    <StatsSection client:visible />
+    <Testimonial />
+    <InsuranceClaims />
+</Layout>
