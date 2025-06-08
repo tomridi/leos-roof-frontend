@@ -10,6 +10,8 @@ import { slugify } from '../utils/slugify';
 const PAYLOAD_BASE_URL: string = import.meta.env.PUBLIC_PAYLOAD_API_URL || "http://localhost:3000";
 const PAYLOAD_SERVICES_API_ENDPOINT: string = `${PAYLOAD_BASE_URL}/services?depth=2`;
 
+console.log("DEBUG: Attempting to fetch from Astro (ServicesSection.astro):", PAYLOAD_SERVICES_API_ENDPOINT);
+
 let transformedTabs: ServicesTab[] = [];
 let fetchError: string | null = null; // Add fetchError state
 
