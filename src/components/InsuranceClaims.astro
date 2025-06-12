@@ -1,4 +1,7 @@
-<a href="#" class="block text-primary md:text-gray hover:text-primary bg-light-blue hover:bg-white transition-colors duration-300 ease-in-out overflow-hidden px-4 py-12">
+---
+import { PHONE_NUMBER } from '../utils/constants';
+---
+<a href={`tel:${PHONE_NUMBER}`} class="block text-primary md:text-gray hover:text-primary bg-light-blue hover:bg-white transition-colors duration-300 ease-in-out overflow-hidden px-4 py-12">
     <div class="container mx-auto flex justify-between items-center">
         <div class="flex-grow pr-8">
             <h2 class="font-bold text-lg md:text-4xl">
@@ -8,7 +11,7 @@
                 Dealing with storm damage? Leo’s Roofing and Remodeling is here to help. We’ll inspect the damage, guide you through the insurance process, and work directly with your adjuster–making it as smooth and stress-free as possible.
             </span>
             <span class="font-bold md:text-medium">
-                Call xxx-xxx-xxxx to schedule your inspection today.
+                Call {PHONE_NUMBER} to schedule your inspection today.
             </span>
         </div>
         <div class="flex-shrink-0">

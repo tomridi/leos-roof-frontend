@@ -1,9 +1,5 @@
 ---
-import Layout from '../../layouts/Layout.astro';
-import type { Locations, MediaAsset } from '../../types/payload.ts';
-
-import { RichText } from '@payloadcms/richtext-lexical/react';
-import { slugify } from '../../utils/slugify';
+export const prerender = false;
 
 //Import Components
 import EmergencyCall from '../../components/EmergencyCall.astro';
@@ -11,188 +7,210 @@ import StatsSection from '../../components/StatsSection.jsx';
 import InsuranceClaims from '../../components/InsuranceClaims.astro';
 import Slideshow from '../../components/Slideshow';
 
-export async function getStaticPaths() {
+import Layout from '../../layouts/Layout.astro';
+import type { Locations, MediaAsset } from '../../types/payload.ts';
+import { slugify } from '../../utils/slugify';
+import { RichText } from '@payloadcms/richtext-lexical/react';
+
+const PAYLOAD_BASE_URL = import.meta.env.PUBLIC_PAYLOAD_API_URL;
+const LOCATIONS_API = `${PAYLOAD_BASE_URL}/locations?depth=1&limit=100`;
+const slug = Astro.params.slug;
+
+console.log('slug:', slug);
+
+let location: Locations | null = null;
+let error: string | null = null;
+let slideshowImages: Array<{src: string; alt: string; caption: string; width: number | null; height: number | null;}> = [];
+let coverImage: {src: string; alt: string; width: number | null; height: number | null;} | null = null;
+
+try {
+    const response = await fetch(LOCATIONS_API);
     
-    const PAYLOAD_BASE_URL = import.meta.env.PUBLIC_PAYLOAD_API_URL;
-    const LOCATIONS_API = `${PAYLOAD_BASE_URL}/locations?depth=1&limit=100`;
-
-    try {
-        const response = await fetch(LOCATIONS_API);
-        
-        if (!response.ok) {
-            throw new Error(`Failed to fetch services: ${response.status} ${response.statusText}`);
-        }
-
-        const data = await response.json();
-        const locations: Locations[] = data.docs;
-
-        return locations.map((location) => ({
-            params: { slug: slugify(location.title) },
-            props: { 
-                location : {
-                    id: location.id,
-                    title: location.title,
-                    intro: location.intro,
-                    introMain: location.introMain,
-                    description: location.description,
-                    does: location.do,
-                    dont: location.dont,
-                    coverImage: location.coverImage as MediaAsset,
-                    gallery: location.gallery.map(item => ({
-                        image: item.image as MediaAsset,
-                        caption: item.caption || '',
-                    }))
-                },
-            },
-        }));
-
-    } catch (error) {
-        console.error('Error fetching services:', error);
-        return [];
-
+    if (!response.ok) {
+        throw new Error(`Failed to fetch locations: ${response.status} ${response.statusText}`);
     }
+
+    const data = await response.json();
+    const locations: Locations[] = data.docs;
+    location = locations.find(loc => slugify(loc.title) === slug) || null;
+
+    if (!location) {
+        return Astro.redirect('/404');
+    }
+
+    // Prepare images for slideshow/gallery
+    slideshowImages = location.gallery?.map((item: any) => ({
+        src: item.image.url,
+        alt: item.caption || location!.title,
+        caption: item.caption || '',
+        width: item.image.width || null,
+        height: item.image.height || null,
+    })) || [];
+
+    // Prepare cover image
+    coverImage = location.coverImage ? {
+        src: location.coverImage.url,
+        alt: location.coverImage.caption || location!.title,
+        width: location.coverImage.width || null,
+        height: location.coverImage.height || null,
+    } : null;
+
+} catch (err) {
+    console.error('Error fetching location:', err);
+    error = 'Failed to load location';
 }
 
-const { location } = Astro.props;
-const { id, title, introMain, intro, description, does, dont, coverImage } = location;
-
-const coverImageAlt = coverImage.alt;
-const coverImageUrl = coverImage.url;
-
-const slideshowImages = location.gallery.map(item => ({
-  src: item.image.url,
-  alt: item.caption || location.title,
-}));
-
-
 //SEO CONFIG PAGE BY PAGE
-const pagetitle = `${location.title} `;
-const pagedescription = `${location.description} ` || "Learn more about our services at Leo's Roofing & Remodeling.";
+const pagetitle = location ? `${location.title}` : 'Location Not Found';
+const pagedescription = location?.description || "Learn more about our services at Leo's Roofing & Remodeling.";
 
 ---
+
 <Layout title={pagetitle} description={pagedescription}>
-    <div class="flex flex-col h-[360px] sm:h-[50vh] mt-15 md:mt-25 overflow-hidden">
-        <Slideshow images={slideshowImages} interval={8000} arrows={false} custom_arrows={true} caption={false} bullets={false} client:load />
-    </div>
-    <section class="flex flex-col bg-gray-light ">
-        <div class="flex-grow container mx-auto
-        text-left px-4 md:px-0 py-15 
-        content-start">
-            <h1 class="leading-[1.4] font-thin md:text-4xl max-w-3/4">
-               {title}
-            </h1>
-            <h2 class="font-semibold text-xl mt-7">
-                {introMain}
-            </h2>
-            <div class="font-thin text-medium max-w-[750px] inline-block mt-2">
-                <RichText data={intro} />
+    {error ? (
+        <section class="container mx-auto py-20 text-center">
+            <h1>Error: {error}</h1>
+        </section>
+    ) : location ? (
+        <>
+            <div class="flex flex-col h-[360px] sm:h-[50vh] mt-15 md:mt-25 overflow-hidden">
+                <Slideshow images={slideshowImages} interval={8000} arrows={false} custom_arrows={true} caption={false} bullets={false} client:load />
             </div>
-        </div>
-    </section>
-    <StatsSection client:visible />
-    <section class="bg-primary text-white font-thin text-base md:text-medium py-20 px-4">
-         <div class="container mx-auto text-left">
-            <div class="inline-block mt-2">
-                <RichText data={description}/>
-            </div>
-            {does && (
-            <div class="mt-10">
-                <span class="text-light-blue font-semibold text-xl">DOs</span>
-                <RichText data={does} />
-            </div>
+            <section class="flex flex-col bg-gray-light ">
+                <div class="flex-grow container mx-auto
+                text-left px-4 md:px-0 py-15 
+                content-start">
+                    <h1 class="leading-[1.4] font-thin md:text-4xl max-w-3/4">
+                       {location.title}
+                    </h1>
+                    <h2 class="font-semibold text-xl mt-7">
+                        {location.introMain}
+                    </h2>
+                    <div class="font-thin text-medium max-w-[750px] inline-block mt-2">
+                        <RichText data={location.intro} />
+                    </div>
+                </div>
+            </section>
+            
+            <StatsSection client:visible />
+            
+            <section class="bg-primary text-white font-thin text-base md:text-medium py-20 px-4">
+                 <div class="container mx-auto text-left">
+                    <div class="inline-block mt-2">
+                        <RichText data={location.description}/>
+                    </div>
+                    {location.do && (
+                    <div class="mt-10">
+                        <span class="text-light-blue font-semibold text-xl">DOs</span>
+                        <RichText data={location.do} />
+                    </div>
+                    )}
+                    {location.dont && (
+                    <div class="mt-10">
+                        <span class="text-accent font-semibold text-xl">DON'Ts</span>
+                        <RichText data={location.dont} />
+                    </div>
+                    )}
+                </div>
+            </section>
+            
+            <EmergencyCall />
+
+            {coverImage && (
+                <div class="flex flex-col h-[360px] md:h-[500px] overflow-hidden">
+                    <img 
+                        src={coverImage.src} 
+                        alt={coverImage.alt} 
+                        class="w-full h-full object-cover object-center" 
+                        loading="lazy"
+                        width={coverImage.width}
+                        height={coverImage.height}
+                    />
+                </div>
             )}
-            {dont && (
-            <div class="mt-10">
-                <span class="text-accent font-semibold text-xl">DON’Ts</span>
-                <RichText data={dont} />
-            </div>
-            )}
-    </section>
-    
-    <EmergencyCall />
 
-    <div class="flex flex-col h-[360px] md:h-[500px] overflow-hidden">
-        <img src={coverImageUrl} alt={coverImageAlt} class="w-full h-full object-cover object-center " loading="lazy">
-    </div>
-
-    <section class="bg-gray-light">
-        <div class="container mx-auto text-left px-4 md:px-0 py-8 md:py-15">
-            <h2 class="leading-[1.4] font-thin text-medium md:text-4xl md:max-w-3/4">
-                All of our services in {title}:   
-            </h2>
-            <div class="flex mt-10 md:text-medium">
-                <div class="w-1/2 flex-none">
-                    <h3 class="font-semibold md:text-2xl">
-                        Roofing Services
-                    </h3>
-                    <ul class="list-disc ml-5 mt-3">
-                        <li>Residential Roofing</li>
-                        <li>Commercial Roofing</li>
-                        <li>Roof Repairs</li>
-                        <li>Heat Tape, Gutters, & Downspout</li>
-                        <li>Snow Removal</li>
-                        <li>Emergency Services</li>
-                    </ul>  
-                </div>
-                <div class="w-1/2 flex-auto">
-                    <h3 class="font-semibold md:text-2xl">
-                        Remodeling Services
-                    </h3>
-                    <ul class="list-disc ml-5 mt-3">
-                        <li>Residential Roofing</li>
-                        <li>Commercial Roofing</li>
-                        <li>Roof Repairs</li>
-                        <li>Heat Tape, Gutters, & Downspout</li>
-                        <li>Snow Removal</li>
-                        <li>Emergency Services</li>
-                    </ul>  
-                </div>
-        </div>
-    </section>
-
-    <section class="bg-[url(/images/services-corevalues-bg.webp)] bg-cover bg-center bg-no-repeat p-15 md:h-[630px] px-4">  
-        <div class="container mx-auto text-white font-thin">
-            <h2 class="leading-[1.4] text-medium md:text-4xl md:max-w-3/4">
-                Why choose Leo's Roofing & Remodeling ?
-            </h2>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-15 md:text-2xl">
-            <!-- Column 1 -->
-                <div class="flex flex-col space-y-8">
-                    <div class="flex items-center gap-6">
-                        <span class="flex items-center justify-center w-10 h-10 rounded-full bg-black text-white font-light">1</span>
-                        <span>Local Mountain Expertise</span>
-                    </div>
-                    <div class="flex items-center gap-6">
-                        <span class="flex items-center justify-center w-10 h-10 rounded-full bg-black text-white font-light">2</span>
-                        <span>Roofing & Remodeling</span>
-                    </div>
-                    <div class="flex items-center gap-6">
-                        <span class="flex items-center justify-center w-10 h-10 rounded-full bg-black text-white font-light">3</span>
-                        <span>Weather-Ready Solutions</span>
+            <section class="bg-gray-light">
+                <div class="container mx-auto text-left px-4 md:px-0 py-8 md:py-15">
+                    <h2 class="leading-[1.4] font-thin text-medium md:text-4xl md:max-w-3/4">
+                        All of our services in {location.title}:   
+                    </h2>
+                    <div class="flex mt-10 md:text-medium">
+                        <div class="w-1/2 flex-none">
+                            <h3 class="font-semibold md:text-2xl">
+                                Roofing Services
+                            </h3>
+                            <ul class="list-disc ml-5 mt-3">
+                                <li>Residential Roofing</li>
+                                <li>Commercial Roofing</li>
+                                <li>Roof Repairs</li>
+                                <li>Heat Tape, Gutters, & Downspout</li>
+                                <li>Snow Removal</li>
+                                <li>Emergency Services</li>
+                            </ul>  
+                        </div>
+                        <div class="w-1/2 flex-auto">
+                            <h3 class="font-semibold md:text-2xl">
+                                Remodeling Services
+                            </h3>
+                            <ul class="list-disc ml-5 mt-3">
+                                <li>Residential Roofing</li>
+                                <li>Commercial Roofing</li>
+                                <li>Roof Repairs</li>
+                                <li>Heat Tape, Gutters, & Downspout</li>
+                                <li>Snow Removal</li>
+                                <li>Emergency Services</li>
+                            </ul>  
+                        </div>
                     </div>
                 </div>
+            </section>
 
-            <!-- Column 2 -->
-                <div class="flex flex-col space-y-8">
-                    <div class="flex items-center gap-6">
-                        <span class="flex items-center justify-center w-10 h-10 rounded-full bg-black text-white font-light">4</span>
-                        <span>Hands-On Craftsmanship</span>
-                    </div>
-                    <div class="flex items-center gap-6">
-                        <span class="flex items-center justify-center w-10 h-10 rounded-full bg-black text-white font-light">5</span>
-                        <span>Fast, Flexible Service</span>
-                    </div>
-                    <div class="flex items-center gap-6">
-                        <span class="flex items-center justify-center w-10 h-10 rounded-full bg-black text-white font-light">6</span>
-                        <span>Honest, Clear Communication</span>
+            <section class="bg-[url(/images/services-corevalues-bg.webp)] bg-cover bg-center bg-no-repeat p-15 md:h-[630px] px-4">  
+                <div class="container mx-auto text-white font-thin">
+                    <h2 class="leading-[1.4] text-medium md:text-4xl md:max-w-3/4">
+                        Why choose Leo's Roofing & Remodeling ?
+                    </h2>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-15 md:text-2xl">
+                    <!-- Column 1 -->
+                        <div class="flex flex-col space-y-8">
+                            <div class="flex items-center gap-6">
+                                <span class="flex items-center justify-center w-10 h-10 rounded-full bg-black text-white font-light">1</span>
+                                <span>Local Mountain Expertise</span>
+                            </div>
+                            <div class="flex items-center gap-6">
+                                <span class="flex items-center justify-center w-10 h-10 rounded-full bg-black text-white font-light">2</span>
+                                <span>Roofing & Remodeling</span>
+                            </div>
+                            <div class="flex items-center gap-6">
+                                <span class="flex items-center justify-center w-10 h-10 rounded-full bg-black text-white font-light">3</span>
+                                <span>Weather-Ready Solutions</span>
+                            </div>
+                        </div>
+
+                    <!-- Column 2 -->
+                        <div class="flex flex-col space-y-8">
+                            <div class="flex items-center gap-6">
+                                <span class="flex items-center justify-center w-10 h-10 rounded-full bg-black text-white font-light">4</span>
+                                <span>Hands-On Craftsmanship</span>
+                            </div>
+                            <div class="flex items-center gap-6">
+                                <span class="flex items-center justify-center w-10 h-10 rounded-full bg-black text-white font-light">5</span>
+                                <span>Fast, Flexible Service</span>
+                            </div>
+                            <div class="flex items-center gap-6">
+                                <span class="flex items-center justify-center w-10 h-10 rounded-full bg-black text-white font-light">6</span>
+                                <span>Honest, Clear Communication</span>
+                            </div>
+                        </div>
                     </div>
                 </div>
-            </div>
-        </div>
-    </section>
-    <InsuranceClaims />
+            </section>
+            
+            <InsuranceClaims />
+        </>
+    ) : (
+        <section class="container mx-auto py-20 text-center">
+            <h1>Location not found</h1>
+        </section>
+    )}
 </Layout>
-
-<style>
-
-</style>

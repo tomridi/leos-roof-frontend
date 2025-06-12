@@ -24,7 +24,7 @@
   --color-primary: #001E33; /* Dark Blue */
   --color-white: #FFFFFF; /* White */
   --color-accent: #EB6E50;
-  --color-background: #B0978A; /* Light Brown (Background) */
+  --color-background: #B0978A; /* Light Brown */
   --color-text: #001E33;
   --color-text-light: #A6AFB5;
   --color-light-blue: #A0C7E6;
@@ -36,6 +36,9 @@
   --color-badge: #54789D;
 
   --color-light-brown: #B0978A;
+  --color-dark-brown: #DBD9CA;
+
+  --color-cyan-blue: #8eb3db
 
   --font-franklin: 'Libre Franklin Variable', sans-serif;
   --font-manrope: 'Manrope', sans-serif;

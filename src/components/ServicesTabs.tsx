@@ -31,7 +31,7 @@ export default function ServicesTabs({ tabs }: ServicesTabsProps) {
       style={{ backgroundImage: `url(${tabs[activeIndex].bgImage})` }}
     >
       <div className="w-full">
-        <div className="flex" role="tablist">
+        <div className="flex justify-center gap-x-4 px-4 md:px-0 md:justify-start md:gap-x-0" role="tablist">
           {tabs.map((tab, i) => (
             <button
               key={tab.label}
@@ -42,17 +42,22 @@ export default function ServicesTabs({ tabs }: ServicesTabsProps) {
                 w-1/2
                 md:h-[100px] py-4 focus:outline-none
                 text-white md:text-primary md:text-4xl text-sm uppercase md:normal-case
-                bg-primary md:bg-transparent
+                md:bg-transparent
                 relative group overflow-hidden
-                flex items-center
+                flex items-center cursor-pointer
                 ${transitionClasses}
-                ${activeIndex === i ? "border-transparent" : "border-transparent"}
+                 ${/* === Dynamic Background for Mobile (based on active state) === */''}
+                ${
+                  activeIndex === i
+                    ? `${i === 0 ? 'bg-gray-500' : 'bg-gray-500'}`
+                    : `${i === 0 ? 'bg-primary' : 'bg-primary'}`
+                }
               `}
               onClick={() => setActiveIndex(i)}
             >
               <div
                 className={`
-                  h-full relative z-10 inset-y-0 w-full pt-3
+                  h-full relative z-10 inset-y-0 w-full md:pt-3
                   ${transitionClasses}
                   ${i === 0 ? 'ml-0 mr-auto' : 'ml-auto mr-0'}
                   ${activeIndex !== i && (i === 0 ? 'group-hover:translate-x-8' : 'group-hover:-translate-x-8')}
@@ -87,7 +92,8 @@ export default function ServicesTabs({ tabs }: ServicesTabsProps) {
                       fill="none"
                       xmlns="http://www.w3.org/2000/svg"
                     >
-                      <path d="M31 38L0 88.95H984.5V0H100C72 0 46 14 31 38Z" fill="#8eb3db" />
+                      <path d="M884.61 0H0V88.95H984.5L953.23 38.28C938.54 14.48 912.58 0 884.61 0Z" fill="#8eb3db"/>
+                      
                     </svg>
                   ) : (
                     <svg

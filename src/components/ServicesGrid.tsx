@@ -151,7 +151,7 @@ export default function ServicesGrid({ tabs }: ServicesGridProps) {
                 aria-controls={`tabpanel-${tab.label.replace(/\s+/g, '-')}`}
               >
                 <span>{tab.label}</span>
-                <svg className="h-3 md:h-5 rotate-90 text-white mt-2" viewBox="0 0 35 31" fill="none">
+                <svg className="h-3 md:h-6 rotate-90 text-white mt-2" viewBox="0 0 35 31" fill="none">
                   <path d="M0 31V0L35 15.4967" fill="currentColor" />
                 </svg>
               </button>

@@ -1,6 +1,7 @@
 ---
 // src/components/Footer.astro
 import MapComponent from './map.jsx';
+import { PHONE_NUMBER } from '../utils/constants';
 ---
 
 <footer id="footer" class="bg-primary text-white">
@@ -9,7 +10,7 @@ import MapComponent from './map.jsx';
         <div class="font-thin md:text-medium md:w-3/4 leading-relaxed mt-3 md:pt-1">From Breckenridge to Eagle and beyond, our Summit County roots run deep—and our trusted service continues to grow across the region.</div>
     </div>
     <div class="h-[350px]">
-        <MapComponent latitude={39.113014} longitude={-105.358887} client:only="react" />
+        <MapComponent latitude={39.63042} longitude={-106.04296} zoom={14} client:only="react" />
     </div>
 
     <!-- Desktop -->
@@ -24,7 +25,7 @@ import MapComponent from './map.jsx';
 
             <div class="w-full md:w-[calc(70%*2/8)]">
                 <h3 class="text-xs md:text-lg font-bold uppercase text-background">Contact Us:</h3>
-                <p class="text-white mb-2"><a href="tel:345-7676-8989">345-7676-8989</a></p>
+                <p class="text-white mb-2"><a href={`tel:${PHONE_NUMBER}`}>{PHONE_NUMBER}</a></p>
                 <h3 class="text-xs md:text-lg font-bold mt-10 uppercase text-background">Find Us:</h3>
                 <p class="text-white mb-2">Dolorsit amet 345,</p>
                 <p class="text-white mb-4">Summit County, CO</p>
@@ -69,7 +70,7 @@ import MapComponent from './map.jsx';
             <div>
                 <div class="mb-6">
                     <h3 class="font-semibold text-background mb-2">CONTACT US:</h3>
-                    <p><a href="tel:345-7676-8989">345-7676-8989</a></p>
+                    <p><a href={`tel:${PHONE_NUMBER}`}>{PHONE_NUMBER}</a></p>
                 </div>
                 <div class="mb-6">
                     <h3 class="font-semibold text-background mb-2">FIND US:</h3>

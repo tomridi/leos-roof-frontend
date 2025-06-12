@@ -7,6 +7,9 @@ export interface MediaAsset {
   url: string;
   filename: string;
   mimeType: string;
+  height: number;
+  width: number;
+  caption?: string | null;
   // Add other properties you might use, like 'sizes', 'filename', etc., if needed
   // sizes?: {
   //   thumbnail?: { url: string; width: number; height: number; mimeType: string; filesize: number; filename: string };
@@ -78,13 +81,13 @@ export interface ServiceCategoryDoc {
 
 export interface ServiceDoc {
   id: number;
-  serviceCategory: ServiceCategory; // This is the populated relationship
+  serviceCategory: ServiceCategory;
   title: string;
   description: string;
-  svgIconCode: string; // Your SVG code string
-  content01: any; // Using 'any' for RichText for simplicity, but you can define a proper RichText type if needed
+  svgIconCode: string;
+  content01: any;
   content02: any | null;
-  coverImage?: MediaAsset; // Assuming MediaAsset is defined from previous step
+  coverImage?: MediaAsset;
   callToActionHighlighted?: string | null;
   callToAction: string | null; 
   gallery: { id: string; image: MediaAsset; caption: string | null }[];

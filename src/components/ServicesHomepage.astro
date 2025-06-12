@@ -1,11 +1,17 @@
 ---
 // src/components/ServicesHomepage.astro
+export const prerender = false;
+
 import ServicesTabs from './ServicesTabs.tsx';
 import type { PayloadResponse, ServiceDoc, ServicesTab, ServicesTabItem, ServiceCategoryDoc, MediaAsset } from '../types/payload'; // Make sure to import ServiceCategoryDoc
 
 import { slugify } from '../utils/slugify';
 
-const PAYLOAD_BASE_URL: string = import.meta.env.PUBLIC_PAYLOAD_API_URL || "http://localhost:3000";
+const PAYLOAD_BASE_URL: string = import.meta.env.PUBLIC_PAYLOAD_API_URL;
+if (!PAYLOAD_BASE_URL) {
+  throw new Error("Missing PUBLIC_PAYLOAD_API_URL in environment variables");
+}
+
 const PAYLOAD_SERVICES_API_ENDPOINT: string = `${PAYLOAD_BASE_URL}/services?depth=2&sort=id`;
 
 let transformedTabs: ServicesTab[] = [];

@@ -1,11 +1,14 @@
-<a href="#" class="block text-white hover:text-primary bg-accent hover:bg-white transition-colors duration-300 ease-in-out overflow-hidden px-4">
+---
+import { PHONE_NUMBER } from '../utils/constants';
+---
+<a href={`tel:${PHONE_NUMBER}`} class="block text-white hover:text-primary bg-accent hover:bg-white transition-colors duration-300 ease-in-out overflow-hidden px-4">
     <div class="container mx-auto min-h-[190px] md:h-[140px] flex justify-between items-center">
         <div class="flex-grow pr-4">
             <h2 class="font-bold text-lg md:text-4xl mb-2">
                 Have an Emergency? <br class="md:hidden">We're Here to Help!
             </h2>
             <span class="font-light md:text-medium">
-                Need urgent roofing repairs? Contact us now for a FREE roof inspection or call <br class="md:hidden">(xxx) xxx-xxxx for immediate assistance!
+                Need urgent roofing repairs? Contact us now for a FREE roof inspection or call <br class="md:hidden">{PHONE_NUMBER} for immediate assistance!
             </span>
         </div>
         <div class="flex-shrink-0">

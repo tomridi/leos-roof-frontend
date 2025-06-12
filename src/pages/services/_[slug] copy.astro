@@ -1,33 +1,22 @@
 ---
-export const prerender = false;
+import Layout from '../../layouts/Layout.astro';
+import type { ServiceDoc, ServiceCategory, MediaAsset } from '../../types/payload.ts';
+
+import { RichText } from '@payloadcms/richtext-lexical/react';
+import { slugify } from '../../utils/slugify';
 
 //Import Components
 import EmergencyCall from '../../components/EmergencyCall.astro';
 import Testimonial from '../../components/Testimonial.astro';
 import Slideshow from '../../components/Slideshow';
 
-import Layout from '../../layouts/Layout.astro';
+export async function getStaticPaths() {
+    
+    const PAYLOAD_BASE_URL: string = import.meta.env.PUBLIC_PAYLOAD_API_URL;
+    const PAYLOAD_SERVICES_API_ENDPOINT: string = `${PAYLOAD_BASE_URL}/services?depth=2`;
 
-import type { ServiceDoc, ServiceCategory, MediaAsset } from '../../types/payload.ts';
-import { RichText } from '@payloadcms/richtext-lexical/react';
-import { slugify } from '../../utils/slugify';
-
-const PAYLOAD_BASE_URL: string = import.meta.env.PUBLIC_PAYLOAD_API_URL;
-const API_ENDPOINT: string = `${PAYLOAD_BASE_URL}/services?depth=2`;
-
-const slug = Astro.params.slug;
-
-console.log('slug:', slug);
-
-let service: ServiceDoc | null = null;
-let error: string | null = null;
-let slideshowImages: Array<{src: string; alt: string; caption: string; width: number | null; height: number | null;}> = [];
-let coverImage: {src: string; alt: string; width: number | null; height: number | null;} | null = null;
-
-
-
-try {
-    const response = await fetch(API_ENDPOINT);
+    try {
+        const response = await fetch(PAYLOAD_SERVICES_API_ENDPOINT);
         
         if (!response.ok) {
             throw new Error(`Failed to fetch services: ${response.status} ${response.statusText}`);
@@ -35,36 +24,49 @@ try {
 
         const data = await response.json();
         const services: ServiceDoc[] = data.docs;
-        
-        service = services.find(ser => slugify(ser.title) === slug) || null;
 
-        if (!service) {
-            return Astro.redirect('/404');
-        }
-
-        // Prepare images for slideshow/gallery
-        slideshowImages = service.gallery?.map((item: any) => ({
-            src: item.image.url,
-            alt: item.caption || item!.title,
-            caption: item.caption || '',
-            width: item.image.width || null,
-            height: item.image.height || null,
-        })) || [];
-
-        // Prepare cover image
-        coverImage = service.coverImage ? {
-            src: service.coverImage.url,
-            alt: service.coverImage.caption || service!.title,
-            width: service.coverImage.width || null,
-            height: service.coverImage.height || null,
-        } : null;
-
+        return services.map((service) => ({
+            params: { slug: slugify(service.title) },
+            props: { 
+                service : {
+                    id: service.id,
+                    title: service.title,
+                    description: service.description,
+                    callToActionHighlighted: service.callToActionHighlighted,
+                    callToAction: service.callToAction,
+                    content01: service.content01,
+                    content02: service.content02,
+                    coverImage: service.coverImage as MediaAsset,
+                    gallery: service.gallery.map(item => ({
+                        image: item.image as MediaAsset,
+                        caption: item.caption || '',
+                    }))
+                },
+            },
+            allServices: services.map(s => ({
+                id: s.id,
+                title: s.title,
+                serviceCategory: s.serviceCategory,
+            })), // for Previous/Next
+        }));
 
     } catch (error) {
         console.error('Error fetching services:', error);
         return [];
 
     }
+}
+
+const { service } = Astro.props;
+const { id, title, description, callToAction, callToActionHighlighted, content01, content02, coverImage } = service;
+
+const coverImageAlt = coverImage.alt;
+const coverImageUrl = coverImage.url;
+
+const slideshowImages = service.gallery.map(item => ({
+  src: item.image.url,
+  alt: item.caption || service.title,
+}));
 
 
 //SEO CONFIG PAGE BY PAGE
@@ -78,7 +80,7 @@ const pagedescription = `${service.description} ` || "Learn more about our servi
         text-left px-4 md:px-0 py-15 
         content-start">
             <h1 class="font-thin text-2xl md:text-4xl max-w-3/4">
-               {service.title}
+               {title}
             </h1>
 
             <div class="mt-7 md:mt-10 md:bg-white">
@@ -88,34 +90,23 @@ const pagedescription = `${service.description} ` || "Learn more about our servi
             </div>
 
             <div class="bg-white mt-8 mb-8 md:mb-0 md:mt-0 py-5 md:py-10 px-3 md:px-20 prose">
-                <RichText data={service.content01} />
+                <RichText data={content01} />
             </div>
 
-            {coverImage && (
+
             <div class="h-[240px] md:h-[445px] overflow-hidden">
-
-                <div class="flex flex-col h-[360px] md:h-[500px] overflow-hidden">
-                    <img 
-                        src={coverImage.src} 
-                        alt={coverImage.alt} 
-                        class="w-full h-full object-cover object-center" 
-                        loading="lazy"
-                        width={coverImage.width}
-                        height={coverImage.height}
-                    />
-                </div>
+                    <img src={coverImageUrl} alt={coverImageAlt} class="w-full h-full object-cover object-center " loading="lazy">
             </div>
-            )}
 
-            {service.content02 && (
+            {content02 && (
                 <div class="bg-white mt-8 mb-8 md:mb-0 md:mt-0 py-5 md:py-10 px-3 md:px-20">
-                    <RichText data={service.content02} />
+                    <RichText data={content02} />
                 </div>
             )}
-             {service.callToAction && (
+             {callToAction && (
                 <div class="bg-light-blue py-5 md:py-10 px-3 md:px-20">
-                     <span class="font-semibold mb-5 block">{service.callToActionHighlighted}</span>
-                    {service.callToAction}
+                     <span class="font-semibold mb-5 block">{callToActionHighlighted}</span>
+                    {callToAction}
                 </div>
             )}
             
