@@ -1,22 +1,9 @@
 // src/components/ServicesTabs.tsx 
 import React, { useState } from 'react';
-
-interface TabItem {
-  href: string;
-  title: string;
-  description: string;
-  svg: string;
-}
-
-interface Tab {
-  label: string;
-  bgImage: string;
-  bgColor: string;
-  items: TabItem[];
-}
+import type { ServicesTab, ServicesTabItem, MediaAsset } from '../types/payload.ts';
 
 interface ServicesTabsProps {
-  tabs: Tab[];
+  tabs: ServicesTab[];
 }
 
 export default function ServicesTabs({ tabs }: ServicesTabsProps) {

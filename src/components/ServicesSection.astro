@@ -1,15 +1,14 @@
 ---
 export const prerender = false;
-// src/components/ServicesSection.astro
-// This component fetches and transforms services data into a tab-friendly format.
 
 import ServicesGrid from './ServicesGrid.tsx'; // Ensure this path is correct
 import type { PayloadResponse, ServiceDoc, ServicesTab, ServicesTabItem, ServiceCategoryDoc } from '../types/payload';
 
 import { slugify } from '../utils/slugify';
 
-const PAYLOAD_BASE_URL: string = import.meta.env.PUBLIC_PAYLOAD_API_URL || "http://localhost:3000";
-const PAYLOAD_SERVICES_API_ENDPOINT: string = `${PAYLOAD_BASE_URL}/services?depth=2`;
+
+const PAYLOAD_BASE_URL: string = import.meta.env.PUBLIC_PAYLOAD_API_URL;
+const API_ENDPOINT: string = `${PAYLOAD_BASE_URL}/services?depth=2`;
 
 
 let transformedTabs: ServicesTab[] = [];
@@ -17,7 +16,7 @@ let fetchError: string | null = null; // Add fetchError state
 
 try {
 
-  const response = await fetch(PAYLOAD_SERVICES_API_ENDPOINT);
+  const response = await fetch(API_ENDPOINT);
 
   if (!response.ok) {
     const errorBody = await response.text();
