@@ -1,10 +1,10 @@
 import { useEffect, useRef } from 'react';
 
 const stats = [
-  { label: 'Roof Installed', target: 126, duration: 2800 },
-  { label: 'Roofs Fixed', target: 86, duration: 3200 },
-  { label: 'Gutters Fixed', target: 56, duration: 3500 },
-  { label: 'Remodels', target: 24, duration: 2000 },
+  { label: 'Roof Installed', target: 300, duration: 2800 },
+  { label: 'Roofs Fixed', target: 1400, duration: 3200 },
+  { label: 'Gutters Fixed', target: 2000, duration: 3500 },
+  { label: 'Remodels', target: 120, duration: 2000 },
 ];
 
 export default function StatsSection() {
@@ -74,7 +74,7 @@ export default function StatsSection() {
             key={index}
             className="flex flex-col justify-center items-center"
           >
-            <div className="bg-[url('/images/shape-bg.svg')] bg-no-repeat bg-center bg-contain h-[120px] w-[250px] flex justify-center items-center text-white text-5xl font-bold">
+            <div className="bg-[url('/images/shape-bg.svg')] bg-no-repeat bg-center bg-contain h-[120px] w-[250px] flex justify-center items-center text-white text-4xl font-bold">
               {/* Assign ref directly to the span */}
               <span ref={(el) => (counterRefs.current[index] = el)}>0</span>+
             </div>
