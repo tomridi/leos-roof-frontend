@@ -1,4 +1,5 @@
 // src/components/TeamSection.tsx
+export const prerender = false;
 import React, { useState, useEffect } from 'react';
 
 // 1. Define the interface for the image object coming from Payload's media collection
