@@ -16,7 +16,8 @@ interface ApiTeamMember {
   title: string; // This is the member's name from your Payload "Team" collection
   position: string;
   description: string;
-  image: PayloadImage; // This is the full image object
+  image: PayloadImage | null; // IMPORTANT: image can now be null
+  order: number; // <--- Ensure 'order' property is included in the interface
 }
 
 // 3. Define the interface for ProfileCard's props
@@ -35,18 +36,22 @@ const ProfileCard: React.FC<ProfileCardProps> = ({ member, imageClass, gridClass
   const previewText = needsReadMore ? words.slice(0, 20).join(' ') : member.description;
   const fullText = words.slice(20).join(' ');
 
-  // Determine the image URL. Use member.image.url from the API.
-  const imageUrl = member.image?.url || '/path/to/placeholder.jpg'; // Fallback for safety
+  // Determine the image URL only if member.image exists and has a URL
+  const imageUrl = member.image?.url; // This will be undefined or the URL
 
   return (
-    <div className={`flex flex-col md:block ${gridClasses || ''}`}>
+    <div className={`flex flex-col md:block md:mb-10 ${gridClasses || ''}`}>
       {/* Mobile view */}
-      <div className="flex gap-4 md:block">
-        <img
-          src={imageUrl}
-          alt={member.image?.alt || member.title} // Use image alt or member name
-          className={`h-[115px] w-[115px] ${imageClass || 'md:h-[200px]'} md:w-full rounded-3xl mb-4 md:mb-4 object-cover object-top`}
-        />
+      <div className="flex gap-6 md:block">
+        {/* Conditionally render the image only if imageUrl exists */}
+        {imageUrl && (
+          <img
+            src={imageUrl}
+            alt={member.image?.alt || member.title} // Use image alt or member name
+            className={`h-[115px] w-[115px] ${imageClass || 'md:h-[200px]'} md:w-full rounded-3xl mb-4 md:mb-4 object-cover object-top`}
+          />
+        )}
+
         <div className="md:hidden">
           <h3 className="font-bold text-sm">
             {member.title}{' '}
@@ -93,7 +98,8 @@ export default function TeamSection() {
   useEffect(() => {
     const fetchTeamData = async () => {
       try {
-        const apiUrl = `${import.meta.env.PUBLIC_PAYLOAD_API_URL}/team?depth=1&sort=id`;
+        // Fetching with sort=order already, so the data should come in order
+        const apiUrl = `${import.meta.env.PUBLIC_PAYLOAD_API_URL}/team?depth=1&sort=order`;
         const response = await fetch(apiUrl);
 
         if (!response.ok) {
@@ -101,7 +107,7 @@ export default function TeamSection() {
         }
 
         const data = await response.json();
-        setTeamMembers(data.docs); // Assuming the API returns an object with a 'docs' array
+        setTeamMembers(data.docs);
       } catch (err: any) {
         console.error("Failed to fetch team data:", err);
         setError(`Failed to load team: ${err.message}`);
@@ -137,40 +143,72 @@ export default function TeamSection() {
     );
   }
 
-  // Define your custom imageClass and gridClasses for specific members if needed
-  // This logic is now client-side, so you'd have to map member IDs to these classes
-  // Or, preferably, add these as fields in your Payload CMS collection.
-  // For now, I'm providing an example of how you might dynamically apply them
-  const getMemberClasses = (memberId: number) => {
-    switch (memberId) {
-      case 1: // Leo Villagrana's ID from your API example
-        return { imageClass: "md:h-[365px]", gridClasses: "" };
-      case 2: // Junior's ID
-        return { imageClass: "md:h-[200px]", gridClasses: "" };
-      case 3: // Elquin's ID
-        return { imageClass: "md:h-[200px]", gridClasses: "md:col-start-2 md:row-start-2 md:mt-[-380px]" };
-      case 4: // Bethany's ID
-        return { imageClass: "md:h-[200px]", gridClasses: "" };
-      default:
-        return { imageClass: "md:h-[200px]", gridClasses: "" };
+  // Helper function for dynamic image classes based on CEO position and image presence
+  const getMemberImageClass = (member: ApiTeamMember) => {
+    if (member.image && member.position.toLowerCase() === "ceo") {
+      return "md:h-[365px]";
     }
+    return "md:h-[200px]"; // Default height if no image or not CEO
   };
+
+  // --- NEW LOGIC TO ORGANIZE MEMBERS INTO COLUMNS BASED ON 'order' ---
+  const column1Members: ApiTeamMember[] = [];
+  const column2Members: ApiTeamMember[] = [];
+  const column3Members: ApiTeamMember[] = [];
+
+  teamMembers.forEach(member => {
+    if (member.order === 1) {
+      column1Members.push(member);
+    } else if (member.order === 2 || member.order === 3) {
+      column2Members.push(member);
+    } else if (member.order >= 4) { // Order 4 and greater for the third column
+      column3Members.push(member);
+    }
+    // Note: If you have members with 'order' values other than 1, 2, 3, or >=4
+    // they will not be displayed. Adjust the conditions as necessary for your data.
+  });
+
+  // It's good practice to ensure column2Members are sorted by order if not guaranteed by API
+  column2Members.sort((a, b) => a.order - b.order);
+  // Same for column3Members
+  column3Members.sort((a, b) => a.order - b.order);
 
 
   return (
     <>
       <div className="grid md:grid-cols-3 gap-4 mt-10">
-        {teamMembers.map((member) => {
-          const { imageClass, gridClasses } = getMemberClasses(member.id);
-          return (
+        {/* Column 1 */}
+        <div className="md:col-span-1">
+          {column1Members.map((member) => (
             <ProfileCard
-              key={member.id} // Use the unique ID from the API as the key
+              key={member.id}
               member={member}
-              imageClass={imageClass}
-              gridClasses={gridClasses}
+              imageClass={getMemberImageClass(member)}
             />
-          );
-        })}
+          ))}
+        </div>
+
+        {/* Column 2 */}
+        <div className="md:col-span-1">
+          {column2Members.map((member) => (
+            <ProfileCard
+              key={member.id}
+              member={member}
+              imageClass={getMemberImageClass(member)}
+            />
+          ))}
+        </div>
+
+        {/* Column 3 */}
+        <div className="md:col-span-1">
+          {column3Members.map((member) => (
+            <ProfileCard
+              key={member.id}
+              member={member}
+              imageClass={getMemberImageClass(member)}
+            />
+          ))}
+        </div>
       </div>
     </>
   );

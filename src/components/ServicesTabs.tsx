@@ -34,7 +34,9 @@ export default function ServicesTabs({ tabs }: ServicesTabsProps) {
                     relative group overflow-hidden
                     flex items-center cursor-pointer
                     ${transitionClasses}
-                  
+                    
+                   
+                    
                     bg-[${tab.bgColor || 'primary'}]
 
                   `}
