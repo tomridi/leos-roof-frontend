@@ -55,7 +55,7 @@ export default function GalleryClient({ images, categories, columns }) {
                         window.history.pushState({}, '', newUrl);
                         setActiveCategory(category.slug);
                         }}
-                        className={`hover:text-light-brown block py-1 ${
+                        className={`hover:text-light-brown block py-1 cursor-pointer ${
                         activeCategory === category.slug ? 'text-light-brown font-bold' : ''
                         }`}
                     >
@@ -71,7 +71,7 @@ export default function GalleryClient({ images, categories, columns }) {
 
 
         {/* Image Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-y-4 gap-x-4 mt-10 text-2xl">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-y-4 gap-x-4 mt-10 text-sm">
           {filteredImages.length > 0 ? (
             filteredImages.map((image, index) => (
               <div className="relative overflow-hidden rounded-sm shadow-lg" key={image.id}>
