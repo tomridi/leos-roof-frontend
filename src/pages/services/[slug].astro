@@ -17,57 +17,105 @@ const API_ENDPOINT: string = `${PAYLOAD_BASE_URL}/services?depth=2`;
 
 const slug = Astro.params.slug;
 
-console.log('slug:', slug);
+console.log('Current service slug:', slug);
 
 let service: ServiceDoc | null = null;
 let error: string | null = null;
 let slideshowImages: Array<{src: string; alt: string; caption: string; width: number | null; height: number | null;}> = [];
 let coverImage: {src: string; alt: string; width: number | null; height: number | null;} | null = null;
 
+// Variables for infinite navigation
+let prevService: { title: string; href: string } | null = null;
+let nextService: { title: string; href: string } | null = null;
 
 
 try {
     const response = await fetch(API_ENDPOINT);
-        
-        if (!response.ok) {
-            throw new Error(`Failed to fetch services: ${response.status} ${response.statusText}`);
+
+    if (!response.ok) {
+        throw new Error(`Failed to fetch services: ${response.status} ${response.statusText}`);
+    }
+
+    const data = await response.json();
+    const allServices: ServiceDoc[] = data.docs;
+
+    service = allServices.find(ser => slugify(ser.title) === slug) || null;
+
+    if (!service) {
+        return Astro.redirect('/404');
+    }
+
+    // Prepare images for slideshow/gallery
+    slideshowImages = service.gallery?.map((item: any) => ({
+        src: item.image.url,
+        alt: item.caption || item.image.alt,
+        caption: item.caption || '',
+        width: item.image.width || null,
+        height: item.image.height || null,
+    })) || [];
+
+    // Prepare cover image
+    coverImage = service.coverImage ? {
+        src: service.coverImage.url,
+        alt: service.coverImage.alt || service.title,
+        width: service.coverImage.width || null,
+        height: service.coverImage.height || null,
+    } : null;
+
+    // --- INFINITE NAVIGATION LOGIC ---
+    if (service.serviceCategory && typeof service.serviceCategory === 'object' && 'title' in service.serviceCategory) {
+        const currentCategoryTitle = service.serviceCategory.title;
+
+        const servicesInSameCategory = allServices
+            .filter(s =>
+                s.serviceCategory &&
+                typeof s.serviceCategory === 'object' &&
+                'title' in s.serviceCategory &&
+                s.serviceCategory.title === currentCategoryTitle
+            )
+            .sort((a, b) => a.title.localeCompare(b.title)); // Sort consistently
+
+        const currentIndex = servicesInSameCategory.findIndex(s => slugify(s.title) === slug);
+
+        if (servicesInSameCategory.length > 1) { // Only enable circular navigation if there's more than one service
+            // Calculate previous index (wraps around to the last item)
+            const prevIndex = (currentIndex - 1 + servicesInSameCategory.length) % servicesInSameCategory.length;
+            const prev = servicesInSameCategory[prevIndex];
+            prevService = {
+                title: prev.title,
+                href: `/services/${slugify(prev.title)}`
+            };
+
+            // Calculate next index (wraps around to the first item)
+            const nextIndex = (currentIndex + 1) % servicesInSameCategory.length;
+            const next = servicesInSameCategory[nextIndex];
+            nextService = {
+                title: next.title,
+                href: `/services/${slugify(next.title)}`
+            };
+        } else {
+             // If there's only one service, prev/next should remain null (or be disabled)
+             prevService = null;
+             nextService = null;
         }
 
-        const data = await response.json();
-        const services: ServiceDoc[] = data.docs;
-        
-        service = services.find(ser => slugify(ser.title) === slug) || null;
-
-        if (!service) {
-            return Astro.redirect('/404');
-        }
-
-        // Prepare images for slideshow/gallery
-        slideshowImages = service.gallery?.map((item: any) => ({
-            src: item.image.url,
-            alt: item.caption || item!.title,
-            caption: item.caption || '',
-            width: item.image.width || null,
-            height: item.image.height || null,
-        })) || [];
-
-        // Prepare cover image
-        coverImage = service.coverImage ? {
-            src: service.coverImage.url,
-            alt: service.coverImage.caption || service!.title,
-            width: service.coverImage.width || null,
-            height: service.coverImage.height || null,
-        } : null;
-
-
-    } catch (error) {
-        console.error('Error fetching services:', error);
-        return [];
-
+    } else {
+        console.warn(`Service "${service.title}" is missing a valid serviceCategory. Navigation will be disabled for this service.`);
+        prevService = null; // Disable navigation if no category
+        nextService = null;
     }
 
 
-//SEO CONFIG PAGE BY PAGE
+} catch (e: any) {
+    error = `An error occurred: ${e.message}`;
+    console.error('Error fetching service details:', e);
+    service = null;
+}
+
+if (!service) {
+    return Astro.redirect('/404');
+}
+
 const pagetitle = `${service.title} `;
 const pagedescription = `${service.description} ` || "Learn more about our services at Leo's Roofing & Remodeling.";
 
@@ -75,7 +123,7 @@ const pagedescription = `${service.description} ` || "Learn more about our servi
 <Layout title={pagetitle} description={pagedescription}>
     <section class="flex flex-col bg-gray-light pt-10 md:pt-25">
         <div class="flex-grow container mx-auto
-        text-left px-4 md:px-0 py-15 
+        text-left px-4 md:px-0 py-15
         content-start">
             <h1 class="font-thin text-2xl md:text-4xl max-w-3/4">
                {service.title}
@@ -83,7 +131,11 @@ const pagedescription = `${service.description} ` || "Learn more about our servi
 
             <div class="mt-7 md:mt-10 md:bg-white">
                 <div class="h-[300px] md:h-[600px] w-auto overflow-hidden">
-                    <Slideshow images={slideshowImages} interval={4000} arrows={true} custom_arrows={false} caption={false} bullets={true} client:load />
+                    {slideshowImages.length > 0 ? (
+                        <Slideshow images={slideshowImages} interval={4000} arrows={true} custom_arrows={false} caption={false} bullets={true} client:load />
+                    ) : (
+                        <img src="/images/default-slideshow-fallback.webp" alt="No gallery images available" class="w-full h-full object-cover object-center" />
+                    )}
                 </div>
             </div>
 
@@ -93,12 +145,11 @@ const pagedescription = `${service.description} ` || "Learn more about our servi
 
             {coverImage && (
             <div class="h-[240px] md:h-[445px] overflow-hidden">
-
                 <div class="flex flex-col h-[360px] md:h-[500px] overflow-hidden">
-                    <img 
-                        src={coverImage.src} 
-                        alt={coverImage.alt} 
-                        class="w-full h-full object-cover object-center" 
+                    <img
+                        src={coverImage.src}
+                        alt={coverImage.alt}
+                        class="w-full h-full object-cover object-center"
                         loading="lazy"
                         width={coverImage.width}
                         height={coverImage.height}
@@ -109,6 +160,7 @@ const pagedescription = `${service.description} ` || "Learn more about our servi
 
             {service.content02 && (
                 <div class="bg-white mt-8 mb-8 md:mb-0 md:mt-0 py-5 md:py-10 px-3 md:px-20">
+                    <div class="text-accent font-bold mb-5">Materials & Options</div>
                     <RichText data={service.content02} />
                 </div>
             )}
@@ -118,24 +170,47 @@ const pagedescription = `${service.description} ` || "Learn more about our servi
                     {service.callToAction}
                 </div>
             )}
-            
+
             <div class="flex justify-between text-sm md:text-3xl font-thin mt-10">
-               <a href="#" class="hover:text-background flex items-center">
+               {prevService ? (
+                 <a href={prevService.href} class="hover:text-background flex items-center">
                     <div class="cursor-pointer pr-3 md:pr-5">
                         <svg class="h-4 md:h-8 w-auto" viewBox="0 0 35 31" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path d="M0 15.4967L35 0V31L0 15.4967Z" fill="currentColor"/>
                         </svg>
                     </div>
-                    <div>Previous</div>
+                    <div>{prevService.title}</div>
                 </a>
-                <a href="#" class="hover:text-background flex items-center">
-                    <div class="pr-3 md:pr-5">Next</div>
+               ) : (
+                <div class="opacity-50 flex items-center">
+                    <div class="pr-3 md:pr-5">
+                        <svg class="h-4 md:h-8 w-auto" viewBox="0 0 35 31" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M0 15.4967L35 0V31L0 15.4967Z" fill="currentColor"/>
+                        </svg>
+                    </div>
+                    <div>Previous</div>
+                </div>
+               )}
+
+               {nextService ? (
+                <a href={nextService.href} class="hover:text-background flex items-center">
+                    <div class="pr-3 md:pr-5">{nextService.title}</div>
                     <div class="cursor-pointer">
                         <svg class="h-4 md:h-8 w-auto" viewBox="0 0 35 31" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path d="M0 31V0L35 15.4967" fill="currentColor"/>
                         </svg>
                     </div>
                 </a>
+               ) : (
+                <div class="opacity-50 flex items-center">
+                    <div class="pr-3 md:pr-5">Next</div>
+                    <div class="cursor-pointer">
+                        <svg class="h-4 md:h-8 w-auto" viewBox="0 0 35 31" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M0 31V0L35 15.4967" fill="currentColor"/>
+                        </svg>
+                    </div>
+                </div>
+               )}
             </div>
 
         </div>

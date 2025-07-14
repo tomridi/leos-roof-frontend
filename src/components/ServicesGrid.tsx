@@ -176,7 +176,6 @@ export default function ServicesGrid({ tabs }: ServicesGridProps) {
           <div
             className="w-screen relative left-1/2 right-1/2 -ml-[50vw] -mr-[50vw]"
             style={{
-              backgroundImage: activeTabData.bgImage ? `url(${activeTabData.bgImage})` : 'none',
               backgroundSize: 'cover',
               backgroundPosition: 'center',
             }}

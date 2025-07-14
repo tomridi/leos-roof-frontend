@@ -98,3 +98,9 @@ ol.timeline li {
         margin-left: 1.5rem; /* Adjust as needed */
         margin-top: 0.5rem;
     }
+
+
+      .st0, .st1 {
+        stroke-miterlimit: 10;
+        stroke-width: .2px;
+      }
