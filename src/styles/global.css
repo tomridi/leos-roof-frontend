@@ -2,15 +2,18 @@
 
 @font-face {
   font-family: 'Franklin Gothic Book';
-  src: url('/fonts/Franklin Gothic Book.ttf') format('ttf');
-  
+  src: url('/fonts/Franklin Gothic Book.woff') format('woff'),  
+       url('/fonts/Franklin Gothic Book.ttf') format('truetype');
+  font-weight: 400;
   font-style: normal;
   font-display: swap;
 }
 
 @font-face {
   font-family: 'Franklin Gothic Demi';
-  src: url('/fonts/FRANKLINGOTT-DEMI.TTF') format('ttf');
+  src: url('/fonts/Franklin Gothic Demi.woff') format('woff'),  
+       url('/fonts/Franklin Gothic Demi.ttf') format('truetype');
+  font-weight: 600;
   font-style: normal;
   font-display: swap;
 }
