@@ -9,14 +9,13 @@ import EmergencyCall from '../components/EmergencyCall.astro';
 import StatsSection from '../components/StatsSection.jsx';
 import Testimonial from '../components/Testimonial.astro';
 
-import ServicesHomepage from '../components/ServicesHomepage.astro';
+import ServicesSectionClient from '../components/ServicesSectionClient.tsx';
 
 //SEO CONFIG PAGE BY PAGE
 const pagetitle = "Home";
 const description = "Learn about our 20+ years of roofing experience.";
 
 import Slideshow from '../components/Slideshow.tsx';
-import Services from './services.astro';
 
 const images = [
   { src: '/images/homepage-hero-01.webp', alt: 'Colorado Roofing Solutions', caption: 'Residential roofing excellence' },
@@ -56,7 +55,7 @@ const images = [
 			</div>
 		</div>
 	</section>
-    <ServicesHomepage />
+	<ServicesSectionClient renderComponent="ServicesTabs" invertOrder={true} client:load />
     <Timeline client:visible />
     <EmergencyCall />
     <StatsSection client:visible />

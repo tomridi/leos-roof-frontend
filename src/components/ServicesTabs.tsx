@@ -1,5 +1,5 @@
-// src/components/ServicesTabs.tsx 
-import React, { useState } from 'react';
+// src/components/ServicesTabs.tsx
+import React, { useState, useEffect } from 'react';
 import type { ServicesTab, ServicesTabItem, MediaAsset } from '../types/payload.ts';
 
 interface ServicesTabsProps {
@@ -8,12 +8,19 @@ interface ServicesTabsProps {
 
 export default function ServicesTabs({ tabs }: ServicesTabsProps) {
   const [activeIndex, setActiveIndex] = useState(0);
-  const transitionClasses = "transition-all duration-500 ease-in-out";
+  const transitionClasses = "transition-all duration-500 ease-in-out"; // Already defined
+
+  useEffect(() => {
+    if (activeIndex >= tabs.length) {
+      setActiveIndex(0);
+    }
+  }, [tabs, activeIndex]);
+
 
   return (
     <section
       id="tabBackgroundSection"
-      className="bg-cover bg-center bg-no-repeat min-h-[700px] md:h-[730px] transition-bg duration-500 overflow-hidden pt-10 md:pt-0"
+      className={`bg-cover bg-center bg-no-repeat min-h-[700px] md:h-[730px] transition-bg duration-500 overflow-hidden pt-10 md:pt-0`}
       style={{ backgroundImage: `url(${tabs[activeIndex].bgImage})` }}
     >
     <div className="container mx-auto min-h-96">
@@ -31,18 +38,19 @@ export default function ServicesTabs({ tabs }: ServicesTabsProps) {
                     md:mt-10
                     text-white md:text-4xl text-sm uppercase md:normal-case font-thin
 
-                    relative group overflow-hidden
+                    relative group overflow-hidden // 'group' is essential for hover targeting
                     flex items-center cursor-pointer
                     ${transitionClasses}
-                    
-                   
-                    
-                    bg-[${tab.bgColor || 'primary'}]
 
+                    ${activeIndex === i ? 'font-semibold text-white' : 'text-gray-300 font-normal'}
                   `}
+                  style={{ backgroundColor: tab.bgColor || '#cccccc' }} // Using a more specific fallback hex
                   onClick={() => setActiveIndex(i)}
                 >
-                    {tab.label}
+                    {/* Wrap the text in a div to apply the animation */}
+                    <div className="transition-transform duration-300 group-hover:translate-x-3">
+                      {tab.label}
+                    </div>
                 </button>
               ))}
             </div>
