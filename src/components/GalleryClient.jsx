@@ -41,7 +41,7 @@ export default function GalleryClient({ images, categories, columns }) {
             <h1 className="leading-[1.4] md:font-thin text-xl md:text-4xl md:max-w-3/4">Gallery</h1>
         </div>
 
-        <div className="flex flex-col md:flex-row md:flex-wrap gap-2 md:gap-6">
+        <div className="flex flex-col md:flex-row md:flex-wrap gap-2 md:gap-12">
             {columns.map((column, colIndex) => (
             <div className="md:w-auto" key={colIndex}>
                 <ul className="list-none">

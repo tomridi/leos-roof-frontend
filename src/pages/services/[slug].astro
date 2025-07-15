@@ -13,7 +13,7 @@ import { RichText } from '@payloadcms/richtext-lexical/react';
 import { slugify } from '../../utils/slugify';
 
 const PAYLOAD_BASE_URL: string = import.meta.env.PUBLIC_PAYLOAD_API_URL;
-const API_ENDPOINT: string = `${PAYLOAD_BASE_URL}/services?depth=2`;
+const API_ENDPOINT: string = `${PAYLOAD_BASE_URL}/services?depth=2&limit=0`;
 
 const slug = Astro.params.slug;
 

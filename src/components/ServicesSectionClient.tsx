@@ -24,7 +24,7 @@ const ServicesSectionClient: React.FC<ServicesSectionClientProps> = ({ renderCom
     const fetchServicesData = async () => {
       try {
         const PAYLOAD_BASE_URL: string = import.meta.env.PUBLIC_PAYLOAD_API_URL;
-        const API_ENDPOINT: string = `${PAYLOAD_BASE_URL}/services?depth=2`;
+        const API_ENDPOINT: string = `${PAYLOAD_BASE_URL}/services?depth=2&sort=order&limit=100`;
 
         console.log("Attempting to fetch services data from:", API_ENDPOINT);
 

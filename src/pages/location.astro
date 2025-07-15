@@ -7,7 +7,7 @@ import Layout from '../layouts/Layout.astro';
 
 // Fetch from Payload
 const PAYLOAD_BASE_URL = import.meta.env.PUBLIC_PAYLOAD_API_URL;
-const LOCATIONS_API = `${PAYLOAD_BASE_URL}/locations?depth=1&limit=100`;
+const LOCATIONS_API = `${PAYLOAD_BASE_URL}/locations?depth=1&sort=order&limit=100`;
 
 let locations: {
   id: number;

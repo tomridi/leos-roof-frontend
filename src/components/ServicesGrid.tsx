@@ -90,24 +90,29 @@ export default function ServicesGrid({ tabs }: ServicesGridProps) {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             {services.slice(rowIndex * 2, rowIndex * 2 + 2).map((service, index) => {
               // Parse the SVG string to get attributes and inner HTML
-              const { attributes, innerHTML } = parseSvgString(service.svg);
+              // We'll use innerHTML here, and hardcode attributes for the outer SVG tag
+              const paths = service.svg;
 
               return (
                 <div key={index} className="flex gap-8 items-start min-h-[200px] py-8">
                   <a href={service.href} className="flex-1">
                     <div className="flex flex-col justify-center group">
+                      {/* Hardcoded SVG attributes, dynamic innerHTML */}
                       <svg
-                        className="w-8 h-auto mb-5 stroke-current text-primary transition-colors duration-350 group-hover:text-background"
-                        // Pass extracted attributes, defaulting if not present
-                        viewBox={attributes.viewBox}
-                        fill={attributes.fill || "currentColor"} // Default fill to currentColor if not specified in SVG
-                        xmlns={attributes.xmlns || "http://www.w3.org/2000/svg"}
-                        dangerouslySetInnerHTML={{ __html: innerHTML }}
+                        width="34" // Hardcoded width
+                        height="34" // Hardcoded height
+                        className="mb-2 stroke-current text-primary transition-colors duration-350 group-hover:text-background"
+                        viewBox="0 0 36 36" // Hardcoded viewBox
+                        fill="none" // Hardcoded fill
+                        xmlns="http://www.w3.org/2000/svg"
+                        dangerouslySetInnerHTML={{ __html: paths }} // Dynamic inner paths
                       />
-                      <h3 className="font-semibold md:text-lg mb-2 transition-colors duration-200 group-hover:text-background">
+
+
+                      <h3 className="font-semibold md:text-lg mb-1 transition-colors duration-200 group-hover:text-background">
                         {service.title}
                       </h3>
-                      <p className="md:text-lg transition-colors duration-200 group-hover:text-background">
+                      <p className="md:text-lg font-thin transition-colors duration-200 group-hover:text-background">
                         {service.description}
                       </p>
                     </div>
@@ -151,9 +156,12 @@ export default function ServicesGrid({ tabs }: ServicesGridProps) {
                 aria-controls={`tabpanel-${tab.label.replace(/\s+/g, '-')}`}
               >
                 <span>{tab.label}</span>
-                <svg className="h-3 md:h-6 rotate-90 text-white mt-2" viewBox="0 0 35 31" fill="none">
-                  <path d="M0 31V0L35 15.4967" fill="currentColor" />
+                <svg className='mt-2' width="24" height="22" viewBox="0 0 24 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <g clip-path="url(#clip0_1191_485)">
+                    <path d="M0 -1.04907e-06L24 0L12.0026 22" fill="white"/>
+                  </g>
                 </svg>
+
               </button>
             ))}
           </div>
