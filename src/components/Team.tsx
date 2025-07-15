@@ -1,5 +1,4 @@
 // src/components/TeamSection.tsx
-export const prerender = false;
 import React, { useState, useEffect } from 'react';
 
 // 1. Define the interface for the image object coming from Payload's media collection
@@ -8,7 +7,6 @@ interface PayloadImage {
   alt: string;
   url: string;
   thumbnailURL?: string;
-  // Add other properties if you use them, e.g., width, height, sizes
 }
 
 // 2. Define the interface for a single team member as it comes from the API
@@ -25,11 +23,10 @@ interface ApiTeamMember {
 interface ProfileCardProps {
   member: ApiTeamMember; // The 'member' prop will be of type ApiTeamMember
   imageClass?: string; // Optional property (still used for custom styling)
-  gridClasses?: string; // Optional property (still used for custom styling)
 }
 
 // 4. Type the props for the ProfileCard functional component
-const ProfileCard: React.FC<ProfileCardProps> = ({ member, imageClass, gridClasses }) => {
+const ProfileCard: React.FC<ProfileCardProps> = ({ member, imageClass }) => {
   const [showFullDescription, setShowFullDescription] = useState(false);
   const words = member.description.split(/\s+/);
   const needsReadMore = words.length > 20;
@@ -41,24 +38,27 @@ const ProfileCard: React.FC<ProfileCardProps> = ({ member, imageClass, gridClass
   const imageUrl = member.image?.url; // This will be undefined or the URL
 
   return (
-    <div className={`flex flex-col md:block md:mb-10 ${gridClasses || ''}`}>
-      {/* Mobile view */}
-      <div className="flex gap-6 md:block">
+    // Root div for ProfileCard:
+    // - On mobile, it acts as a stacking container with bottom margin.
+    // - On desktop, it has no bottom margin as its parent grid handles spacing.
+    <div className="flex flex-col mb-10 md:mb-0">
+      {/* Mobile view: Hidden on desktop, displays image and text side-by-side */}
+      <div className="flex gap-6 md:hidden">
         {/* Conditionally render the image only if imageUrl exists */}
         {imageUrl && (
           <img
             src={imageUrl}
             alt={member.image?.alt || member.title} // Use image alt or member name
-            className={`h-[115px] w-[115px] ${imageClass || 'md:h-[200px]'} md:w-full rounded-3xl mb-4 md:mb-4 object-cover object-top`}
+            className={`h-[115px] w-[115px] rounded-3xl mb-4 object-cover object-top ${imageClass || ''}`}
           />
         )}
 
-        <div className="md:hidden">
+        <div>
           <h3 className="font-bold text-sm">
             {member.title}{' '}
             <span className="text-text-light text-xs mb-2">{member.position}</span>
           </h3>
-          <p className="text-primary leading-relaxed text-xs md:text-medium profile-description">
+          <p className="text-primary leading-relaxed text-xs profile-description">
             {previewText}
             {needsReadMore && !showFullDescription && <span className="read-more-dots">...</span>}
             {needsReadMore && (
@@ -78,11 +78,19 @@ const ProfileCard: React.FC<ProfileCardProps> = ({ member, imageClass, gridClass
         </div>
       </div>
 
-      {/* Desktop view (always full description) */}
-      <div className="text-sm md:text-xl hidden md:block">
-        <h3 className="font-bold">{member.title}</h3>
-        <p className="md:text-medium text-text-light mb-4">{member.position}</p>
-        <p className="text-primary leading-relaxed text-xs md:text-medium">
+      {/* Desktop view (always full description): Hidden on mobile, displays image on top, text below */}
+      {/* This view is used for all members *except* the special 'leadMember' on desktop */}
+      <div className="text-sm hidden md:block">
+        {imageUrl && (
+          <img
+            src={imageUrl}
+            alt={member.image?.alt || member.title}
+            className={`w-full ${imageClass || 'md:h-[200px]'} rounded-3xl mb-4 object-cover object-top`}
+          />
+        )}
+        <h3 className="font-bold text-xl">{member.title}</h3>
+        <p className="text-xl text-text-light mb-4">{member.position}</p>
+        <p className="text-primary leading-relaxed text-base">
           {member.description}
         </p>
       </div>
@@ -144,73 +152,69 @@ export default function TeamSection() {
     );
   }
 
+  // Get the first member (assumed to be order:1 after sort)
+  const leadMember = teamMembers[0];
+  // Get the rest of the members
+  const otherMembers = teamMembers.slice(1);
+
   // Helper function for dynamic image classes based on CEO position and image presence
+  // This is used for members rendered by ProfileCard (i.e., non-lead members on desktop, all members on mobile).
   const getMemberImageClass = (member: ApiTeamMember) => {
+    // If a non-lead member is also CEO, you can still apply a larger height here.
     if (member.image && member.position.toLowerCase() === "ceo") {
-      return "md:h-[365px]";
+      return "md:h-[365px]"; // Example for CEO if it's NOT the lead member but still has an image
     }
-    return "md:h-[200px]"; // Default height if no image or not CEO
+    return "md:h-[200px]"; // Default height for other members on desktop
   };
 
-  // --- NEW LOGIC TO ORGANIZE MEMBERS INTO COLUMNS BASED ON 'order' ---
-  const column1Members: ApiTeamMember[] = [];
-  const column2Members: ApiTeamMember[] = [];
-  const column3Members: ApiTeamMember[] = [];
-
-  teamMembers.forEach(member => {
-    if (member.order === 1) {
-      column1Members.push(member);
-    } else if (member.order === 2 || member.order === 3) {
-      column2Members.push(member);
-    } else if (member.order >= 4) { // Order 4 and greater for the third column
-      column3Members.push(member);
-    }
-    // Note: If you have members with 'order' values other than 1, 2, 3, or >=4
-    // they will not be displayed. Adjust the conditions as necessary for your data.
-  });
-
-  // It's good practice to ensure column2Members are sorted by order if not guaranteed by API
-  column2Members.sort((a, b) => a.order - b.order);
-  // Same for column3Members
-  column3Members.sort((a, b) => a.order - b.order);
-
-
   return (
-    <>
-      <div className="grid md:grid-cols-3 gap-4 mt-10">
-        {/* Column 1 */}
-        <div className="md:col-span-1">
-          {column1Members.map((member) => (
-            <ProfileCard
-              key={member.id}
-              member={member}
-              imageClass={getMemberImageClass(member)}
-            />
-          ))}
-        </div>
-
-        {/* Column 2 */}
-        <div className="md:col-span-1">
-          {column2Members.map((member) => (
-            <ProfileCard
-              key={member.id}
-              member={member}
-              imageClass={getMemberImageClass(member)}
-            />
-          ))}
-        </div>
-
-        {/* Column 3 */}
-        <div className="md:col-span-1">
-          {column3Members.map((member) => (
-            <ProfileCard
-              key={member.id}
-              member={member}
-              imageClass={getMemberImageClass(member)}
-            />
-          ))}
-        </div>
+    <section className="team-section container mx-auto pt-8">
+      {/* Mobile Layout: Display all members stacked vertically using ProfileCard's mobile styling */}
+      <div className="md:hidden">
+        {teamMembers.map((member) => (
+          <ProfileCard
+            key={member.id}
+            member={member}
+            imageClass={getMemberImageClass(member)}
+          />
+        ))}
       </div>
-    </>
+
+      {/* Desktop Layout: Hidden on mobile */}
+      <div className="hidden md:block">
+        {leadMember && (
+          // Layout for the first team member: takes a two-column row
+          <div className="grid grid-cols-[370px_1fr] mb-17 gap-5">
+            <div className="col-span-1">
+              {leadMember.image?.url && (
+                <img
+                  src={leadMember.image.url}
+                  alt={leadMember.image?.alt || leadMember.title}
+                  className="h-[385px] w-[370px] object-cover object-top rounded-3xl"
+                />
+              )}
+            </div>
+            <div className="col-span-1 flex flex-col justify-end">
+              <h3 className="font-bold text-2xl">{leadMember.title}</h3>
+              <p className="text-xl text-text-light mb-4">{leadMember.position}</p>
+              <p className="text-primary leading-relaxed text-base">{leadMember.description}</p>
+            </div>
+          </div>
+        )}
+
+        {/* Layout for the rest of the team members: takes a three-column grid */}
+        {otherMembers.length > 0 && (
+          <div className="grid grid-cols-3 gap-8 mt-10">
+            {otherMembers.map((member) => (
+              <ProfileCard
+                key={member.id}
+                member={member}
+                imageClass={getMemberImageClass(member)}
+              />
+            ))}
+          </div>
+        )}
+      </div>
+    </section>
   );
 }
