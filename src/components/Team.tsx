@@ -29,7 +29,7 @@ interface ProfileCardProps {
 const ProfileCard: React.FC<ProfileCardProps> = ({ member, imageClass }) => {
   const [showFullDescription, setShowFullDescription] = useState(false);
   const words = member.description.split(/\s+/);
-  const needsReadMore = words.length > 20;
+  const needsReadMore = words.length > 100;
 
   const previewText = needsReadMore ? words.slice(0, 20).join(' ') : member.description;
   const fullText = words.slice(20).join(' ');
@@ -43,13 +43,13 @@ const ProfileCard: React.FC<ProfileCardProps> = ({ member, imageClass }) => {
     // - On desktop, it has no bottom margin as its parent grid handles spacing.
     <div className="flex flex-col mb-10 md:mb-0">
       {/* Mobile view: Hidden on desktop, displays image and text side-by-side */}
-      <div className="flex gap-6 md:hidden">
+      <div className="flex-col gap-4 md:hidden">
         {/* Conditionally render the image only if imageUrl exists */}
         {imageUrl && (
           <img
             src={imageUrl}
             alt={member.image?.alt || member.title} // Use image alt or member name
-            className={`h-[115px] w-[115px] rounded-3xl mb-4 object-cover object-top ${imageClass || ''}`}
+            className={`h-[300px] w-full rounded-3xl mb-6 object-cover object-top ${imageClass || ''}`}
           />
         )}
 

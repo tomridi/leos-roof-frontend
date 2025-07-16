@@ -34,7 +34,7 @@ export default function ServicesGrid({ tabs }: ServicesGridProps) {
   );
 
   const tabClasses = (tabLabel: string) =>
-    `w-1/2 py-2 text-primary cursor-pointer text-left text-base lg:text-4xl flex items-center space-x-5 ${
+    `w-1/2 py-2 text-primary cursor-pointer text-left text-xl lg:text-4xl flex items-center space-x-5 flex justify-center md:justify-start ${
       activeTabLabel === tabLabel
         ? ""
         : "border-transparent text-gray-500"
@@ -54,30 +54,32 @@ export default function ServicesGrid({ tabs }: ServicesGridProps) {
           spaceBetween={30}
           slidesPerView={1}
           pagination={{ clickable: true }}
-          className="px-4"
+          className="px-4 bg-white"
         >
           {services.map((service, index) => (
             <SwiperSlide key={index}>
-              <div className="bg-white p-4">
-                <div className="flex flex-col items-center gap-4">
-                  <div className="relative group">
-                    <img
-                      src={service.image}
-                      alt={service.title}
-                      className="w-full min-h-[265px] object-cover transition-transform duration-300 group-hover:scale-105"
-                    />
-                    <svg
-                      className="absolute top-3 right-5 w-6 h-6 text-white transition-colors duration-200"
-                      viewBox="0 0 35 31"
-                      fill="currentColor"
-                    >
-                      <path d="M0 31V0L35 15.4967" fill="currentColor" />
-                    </svg>
+              <a href={service.href} className="block w-full h-full">
+                <div className="bg-white p-4">
+                  <div className="flex flex-col items-center gap-4">
+                    <div className="relative group">
+                      <img
+                        src={service.image}
+                        alt={service.title}
+                        className="w-full min-h-[265px] object-cover transition-transform duration-300 group-hover:scale-105"
+                      />
+                      <svg
+                        className="absolute top-3 right-5 w-6 h-6 text-white transition-colors duration-200"
+                        viewBox="0 0 35 31"
+                        fill="currentColor"
+                      >
+                        <path d="M0 31V0L35 15.4967" fill="currentColor" />
+                      </svg>
+                    </div>
+                    <h3 className="font-bold text-lg">{service.title}</h3>
+                    <p className="text-gray-700 text-center mb-7">{service.description}</p>
                   </div>
-                  <h3 className="font-bold text-lg">{service.title}</h3>
-                  <p className="text-gray-700 text-center mb-7">{service.description}</p>
                 </div>
-              </div>
+              </a>
             </SwiperSlide>
           ))}
         </Swiper>
@@ -146,51 +148,61 @@ export default function ServicesGrid({ tabs }: ServicesGridProps) {
       <div className="container mx-auto mb-5 md:mb-15 px-4 md:px-0 py-4 md:py-0">
         <div className="w-full">
           <div className="flex" role="tablist">
-            {tabs.map((tab) => (
-              <button
-                key={tab.label}
-                onClick={() => setActiveTabLabel(tab.label)}
-                className={tabClasses(tab.label)}
-                role="tab"
-                aria-selected={activeTabLabel === tab.label}
-                aria-controls={`tabpanel-${tab.label.replace(/\s+/g, '-')}`}
-              >
-                <span>{tab.label}</span>
-                <svg className='mt-2' width="24" height="22" viewBox="0 0 24 22" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <g clip-path="url(#clip0_1191_485)">
-                    <path d="M0 -1.04907e-06L24 0L12.0026 22" fill="white"/>
-                  </g>
-                </svg>
+            {tabs.map((tab) => {
+              // Create a modified label for mobile
+              const mobileLabel = tab.label.replace(/ Services/i, ''); // Removes " Services" case-insensitively
 
-              </button>
-            ))}
+              return (
+                <button
+                  key={tab.label}
+                  onClick={() => setActiveTabLabel(tab.label)}
+                  className={tabClasses(tab.label)}
+                  role="tab"
+                  aria-selected={activeTabLabel === tab.label}
+                  aria-controls={`tabpanel-${tab.label.replace(/\s+/g, '-')}`}
+                >
+                  <span className="md:hidden">{mobileLabel}</span>
+                  <span className="hidden md:inline">{tab.label}</span>
+
+                  <svg className='md:mt-2 w-4 md:w-5 md:h-5' viewBox="0 0 24 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <g clip-path="url(#clip0_1191_485)">
+                      <path d="M0 -1.04907e-06L24 0L12.0026 22" fill="white"/>
+                    </g>
+                  </svg>
+                </button>
+              );
+            })}
           </div>
         </div>
       </div>
 
       {activeTabData && (
-        <div
-          key={activeTabData.label}
-          id={`tabpanel-${activeTabData.label.replace(/\s+/g, '-')}`}
-          role="tabpanel"
-          aria-labelledby={`tab-${activeTabData.label.replace(/\s+/g, '-')}`}
-        >
+        <>
           <div
-            className="text-center text-white p-4 uppercase lg:text-2xl tracking-[0.8em]"
-            style={{ backgroundColor: activeTabData.bgColor }}
+            key={activeTabData.label}
+            id={`tabpanel-${activeTabData.label.replace(/\s+/g, '-')}`}
+            role="tabpanel"
+            aria-labelledby={`tab-${activeTabData.label.replace(/\s+/g, '-')}`}
           >
-            {activeTabData.label}
+            {/* The active tab's label displayed below the buttons should also be responsive */}
+            <div
+              className="text-center text-white p-4 uppercase lg:text-2xl tracking-[0.8em]"
+              style={{ backgroundColor: activeTabData.bgColor }}
+            >
+              <span className="md:hidden">{activeTabData.label.replace(/ Services/i, '')}</span>
+              <span className="hidden md:inline">{activeTabData.label}</span>
+            </div>
+            <div
+              className="w-screen relative left-1/2 right-1/2 -ml-[50vw] -mr-[50vw]"
+              style={{
+                backgroundSize: 'cover',
+                backgroundPosition: 'center',
+              }}
+            >
+              {renderServiceRows(activeTabData.items)}
+            </div>
           </div>
-          <div
-            className="w-screen relative left-1/2 right-1/2 -ml-[50vw] -mr-[50vw]"
-            style={{
-              backgroundSize: 'cover',
-              backgroundPosition: 'center',
-            }}
-          >
-            {renderServiceRows(activeTabData.items)}
-          </div>
-        </div>
+        </>
       )}
     </section>
   );
