@@ -26,11 +26,11 @@ const ServicesSectionClient: React.FC<ServicesSectionClientProps> = ({ renderCom
         const PAYLOAD_BASE_URL: string = import.meta.env.PUBLIC_PAYLOAD_API_URL;
         const API_ENDPOINT: string = `${PAYLOAD_BASE_URL}/services?depth=2&sort=order&limit=100`;
 
-        console.log("Attempting to fetch services data from:", API_ENDPOINT);
+        //console.log("Attempting to fetch services data from:", API_ENDPOINT);
 
         const response = await fetch(API_ENDPOINT);
 
-        console.log("Services API Response Status (from ServicesSectionClient.tsx):", response.status, response.statusText);
+        //console.log("Services API Response Status (from ServicesSectionClient.tsx):", response.status, response.statusText);
 
         if (!response.ok) {
           const errorBody = await response.text();
@@ -42,7 +42,7 @@ const ServicesSectionClient: React.FC<ServicesSectionClientProps> = ({ renderCom
         if (!fetchedPayloadData.docs || fetchedPayloadData.docs.length === 0) {
           console.warn("Fetched services data has no 'docs' array or the 'docs' array is empty (from ServicesSectionClient.tsx).");
         } else {
-          console.log(`Successfully fetched ${fetchedPayloadData.docs.length} service documents (from ServicesSectionClient.tsx).`);
+          //console.log(`Successfully fetched ${fetchedPayloadData.docs.length} service documents (from ServicesSectionClient.tsx).`);
         }
 
         const categorizedServicesMap = new Map<string, { categoryData: ServiceCategoryDoc, items: ServicesTabItem[] }>();

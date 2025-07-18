@@ -1,12 +1,13 @@
 // src/components/ServicesGrid.tsx
 import 'swiper/css';
 import 'swiper/css/pagination';
+import 'swiper/css/autoplay';
 
 import type {ServicesTab, ServicesTabItem } from '../types/payload.ts';
 
 import React, { useState, useEffect } from "react";
 import { Swiper, SwiperSlide } from 'swiper/react';
-import { Pagination } from 'swiper/modules';
+import { Pagination, Autoplay } from 'swiper/modules';
 
 
 // Import the helper function
@@ -21,13 +22,32 @@ export default function ServicesGrid({ tabs }: ServicesGridProps) {
     tabs.length > 0 ? tabs[0].label : ""
   );
 
+  // Initial tab setting or fallback if tabs change
   useEffect(() => {
+    // If tabs are loaded and the current activeTabLabel is no longer valid,
+    // or if no tabs are present, reset to the first tab or empty.
     if (tabs.length > 0 && !tabs.some(tab => tab.label === activeTabLabel)) {
       setActiveTabLabel(tabs[0].label);
     } else if (tabs.length === 0) {
       setActiveTabLabel("");
     }
-  }, [tabs, activeTabLabel]);
+  }, [tabs, activeTabLabel]); // Depend on tabs and activeTabLabel to re-evaluate
+
+  // --- MODIFIED useEffect for URL parameter handling ---
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const categoryLabelFromUrl = params.get('category'); // Look for 'category' parameter
+
+    if (categoryLabelFromUrl && tabs.length > 0) {
+      // Find the tab that matches the category label from the URL
+      const foundTab = tabs.find(tab => tab.label === categoryLabelFromUrl);
+
+      if (foundTab) {
+        setActiveTabLabel(foundTab.label);
+      }
+    }
+  }, [tabs]); // Re-run when tabs data changes (important if tabs are fetched asynchronously)
+
 
   const activeTabData = tabs.find(
     (tab) => tab.label === activeTabLabel
@@ -50,10 +70,14 @@ export default function ServicesGrid({ tabs }: ServicesGridProps) {
     if (isMobile) {
       return (
         <Swiper
-          modules={[Pagination]}
+          modules={[Pagination, Autoplay]}
           spaceBetween={30}
           slidesPerView={1}
           pagination={{ clickable: true }}
+          autoplay={{ // Autoplay configuration object
+            delay: 2000, // Delay between slides in ms (e.g., 3 seconds)
+            disableOnInteraction: false, // Continue autoplay even after user interaction
+          }}
           className="px-4 bg-white"
         >
           {services.map((service, index) => (
@@ -91,26 +115,21 @@ export default function ServicesGrid({ tabs }: ServicesGridProps) {
         <div className="container mx-auto">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             {services.slice(rowIndex * 2, rowIndex * 2 + 2).map((service, index) => {
-              // Parse the SVG string to get attributes and inner HTML
-              // We'll use innerHTML here, and hardcode attributes for the outer SVG tag
               const paths = service.svg;
 
               return (
                 <div key={index} className="flex gap-8 items-start min-h-[200px] py-8">
                   <a href={service.href} className="flex-1">
                     <div className="flex flex-col justify-center group">
-                      {/* Hardcoded SVG attributes, dynamic innerHTML */}
                       <svg
-                        width="34" // Hardcoded width
-                        height="34" // Hardcoded height
+                        width="34"
+                        height="34"
                         className="mb-2 stroke-current text-primary transition-colors duration-350 group-hover:text-background"
-                        viewBox="0 0 36 36" // Hardcoded viewBox
-                        fill="none" // Hardcoded fill
+                        viewBox="0 0 36 36"
+                        fill="none"
                         xmlns="http://www.w3.org/2000/svg"
-                        dangerouslySetInnerHTML={{ __html: paths }} // Dynamic inner paths
+                        dangerouslySetInnerHTML={{ __html: paths }}
                       />
-
-
                       <h3 className="font-semibold md:text-lg mb-1 transition-colors duration-200 group-hover:text-background">
                         {service.title}
                       </h3>
@@ -149,8 +168,7 @@ export default function ServicesGrid({ tabs }: ServicesGridProps) {
         <div className="w-full">
           <div className="flex" role="tablist">
             {tabs.map((tab) => {
-              // Create a modified label for mobile
-              const mobileLabel = tab.label.replace(/ Services/i, ''); // Removes " Services" case-insensitively
+              const mobileLabel = tab.label.replace(/ Services/i, '');
 
               return (
                 <button
@@ -164,7 +182,7 @@ export default function ServicesGrid({ tabs }: ServicesGridProps) {
                   <span className="md:hidden">{mobileLabel}</span>
                   <span className="hidden md:inline">{tab.label}</span>
 
-                  <svg className='md:mt-2 w-4 md:w-5 md:h-5' viewBox="0 0 24 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <svg className='md:mt-2 w-6 md:w-5 md:h-5' viewBox="0 0 24 22" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <g clip-path="url(#clip0_1191_485)">
                       <path d="M0 -1.04907e-06L24 0L12.0026 22" fill="white"/>
                     </g>
@@ -184,7 +202,6 @@ export default function ServicesGrid({ tabs }: ServicesGridProps) {
             role="tabpanel"
             aria-labelledby={`tab-${activeTabData.label.replace(/\s+/g, '-')}`}
           >
-            {/* The active tab's label displayed below the buttons should also be responsive */}
             <div
               className="text-center text-white p-4 uppercase lg:text-2xl tracking-[0.8em]"
               style={{ backgroundColor: activeTabData.bgColor }}

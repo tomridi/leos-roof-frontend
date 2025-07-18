@@ -1,6 +1,6 @@
 ---
 stars: 5
-title: "Exceeding Expectations"
-author: "Mary Rolandini"
+title: "Definitely value for money"
+author: "Deb Borel, Summit Resort Group"
 ---
-Aliquam in risus lacinia libero in nibh. Euismod amet augue cursus enim massa. Magna consectetur sed amet blandit suspendisse commodo. Nisl ut egestas felis purus nisl mi. Viverra duis blandit ac magna pellentesque sit sagittis. Facilisis nunc risus fringilla purus blandit diam turpis. Ipsum turpis.
+Leo’s Roofing has completed multiple projects for me from simple repairs to roof replacements, deck replacements and remodels.  Their customer service is next to none, and communication during the project never ceases to amaze me. Their pricing is fair and transparent – definitely value for money.  I hesitate to give a testimonial because I don’t want Leo to get so busy that he does not have time to complete projects for me, but that being said, I would highly recommend Leo and his team to complete any project you may have.

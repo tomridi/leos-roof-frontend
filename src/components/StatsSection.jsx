@@ -1,10 +1,10 @@
 import { useEffect, useRef } from 'react';
 
 const stats = [
-  { label: 'Roof Installed', target: 300, duration: 2800 },
-  { label: 'Roofs Fixed', target: 1400, duration: 3200 },
-  { label: 'Gutters Fixed', target: 2000, duration: 3500 },
-  { label: 'Remodels', target: 120, duration: 2000 },
+  { label: 'Roof Installed', target: 280, duration: 2800 },
+  { label: 'Roofs Fixed', target: 1245, duration: 3200 },
+  { label: 'Gutters Fixed', target: 1987, duration: 3500 },
+  { label: 'Remodels', target: 106, duration: 2000 },
 ];
 
 export default function StatsSection() {

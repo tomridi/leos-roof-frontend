@@ -6,7 +6,6 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        'test': '#ff00ff',
         primary: '#B0978A',
       },
       brightness: {

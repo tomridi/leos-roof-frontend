@@ -1,6 +1,6 @@
 ---
 stars: 5
-title: "Exceptional Craftsmanship"
-author: "Sarah Johnson"
+title: "GREAT WORK!"
+author: "Kevin Lovett, Summit Resort Group"
 ---
-Aliquam in risus lacinia libero in nibh. Euismod amet augue cursus enim massa. Magna consectetur sed amet blandit suspendisse commodo. Nisl ut egestas felis purus nisl mi. Viverra duis blandit ac magna pellentesque sit sagittis. Facilisis nunc risus fringilla purus blandit diam turpis. Ipsum turpis.
+Leo and his team have completed many projects for our Property Management Company. From small repairs to complete roof replacements for a multi-building Home Owners Association Leo can do it all! Leo is honest, skilled and timely. We will definitely be calling Leo’s Roofing for our next repair! 

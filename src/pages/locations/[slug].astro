@@ -73,7 +73,7 @@ const pagedescription = location?.description || "Learn more about our services 
         </section>
     ) : location ? (
         <>
-            <div class="flex flex-col h-[360px] sm:h-[50vh] mt-15 md:mt-25 overflow-hidden">
+            <div class="flex flex-col h-[360px] sm:h-[50vh] mt-15 md:mt-25 overflow-hidden fade-in-animation">
                 <Slideshow images={slideshowImages} interval={8000} arrows={false} custom_arrows={true} caption={false} bullets={false} client:load />
             </div>
             <section class="flex flex-col bg-gray-light ">

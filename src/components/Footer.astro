@@ -11,7 +11,7 @@ import { PHONE_NUMBER } from '../utils/constants';
         <div class="font-thin md:text-medium md:w-3/4 leading-relaxed mt-3 md:pt-1">From Breckenridge to Eagle and beyond, our Summit County roots run deep—and our trusted service continues to grow across the region.</div>
     </div>
     <div class="h-[350px]">
-        <MapComponent latitude={39.63042} longitude={-106.04296} zoom={14} client:only="react" />
+        <MapComponent latitude={39.59} longitude={-106.04296} zoom={11} client:only="react" />
     </div>
 
     <!-- Desktop -->
@@ -51,8 +51,8 @@ import { PHONE_NUMBER } from '../utils/constants';
             <div class="w-full md:w-[calc(70%*2/8)]">
                 <h3 class="text-xs md:text-lg font-bold uppercase text-background">Services:</h3>
                 <ul class="space-y-2 text-white pl-3">
-                    <li><span class="mr-2">&bull;</span>Roofing Services</li>
-                    <li><span class="mr-2">&bull;</span>Remodeling Services</li>
+                    <li><a href="/services?category=Roofing%20Services"><span class="mr-2">&bull;</span>Roofing Services</a></li>
+                    <li><a href="/services?category=Remodeling%20Services"><span class="mr-2">&bull;</span>Remodeling Services</a></li>
                 </ul>
             </div>
     </div>
@@ -104,12 +104,12 @@ import { PHONE_NUMBER } from '../utils/constants';
             <div class="grid grid-cols-2 md:grid-cols-2 gap-4">
                 <div>
                     <ul class="list-disc list-inside">
-                        <li>Roofing Services</li>
+                        <li><a href="/services?category=Roofing%20Services">Roofing Services</a></li>
                     </ul>
                 </div>
                 <div>
                     <ul class="list-disc list-inside">
-                        <li>Remodeling Services</li>
+                        <li><a href="/services?category=Remodeling%20Services">Remodeling Services</a></li>
                     </ul>
                 </div>
             </div>
