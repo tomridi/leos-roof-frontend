@@ -1,5 +1,7 @@
 // src/pages/api/contact.ts
-//console.log('RESEND_API_KEY:', process.env.RESEND_API_KEY);
+//console.log('RESEND_API_KEY:', import.meta.env.RESEND_API_KEY);
+//console.log('EMAIL TO:', import.meta.env.TO_EMAIL);
+export const prerender = false;
 
 import type { APIRoute } from 'astro';
 import { Resend } from 'resend';
@@ -46,8 +48,9 @@ export const POST: APIRoute = async ({ request }) => {
 
     // Send email
     await resend.emails.send({
-      from: 'website@leosroofingremodeling.com',
-      to: process.env.TO_EMAIL!,
+      //from: 'Website Inquire <website@leosroofingremodeling.com>',
+      from: 'Your Website <onboarding@resend.dev>',
+      to: import.meta.env.TO_EMAIL,
       subject: 'New Contact Form Submission',
       html: `
         <h2>New Contact Form Submission</h2>

@@ -139,7 +139,7 @@ export default function Header() {
           </svg>
         </button>
         <div className="flex-grow" />
-        <a href="/index.html">
+        <a href="/">
         <svg
             id="header-logo"
             className={`h-10`}
@@ -169,7 +169,7 @@ export default function Header() {
       >
         <ul className="flex flex-col items-left">
           <li className="border-b border-white/20 py-5">
-            <a href="/index.html">Home</a>
+            <a href="/">Home</a>
           </li>
           {navLinks.map((link) => (
             <li key={link.href} className="border-b border-white/20 py-5">
