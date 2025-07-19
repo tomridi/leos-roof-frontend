@@ -48,9 +48,10 @@ export const POST: APIRoute = async ({ request }) => {
 
     // Send email
     await resend.emails.send({
-      //from: 'Website Inquire <website@leosroofingremodeling.com>',
-      from: 'Your Website <onboarding@resend.dev>',
+      from: 'Website Inquire <website@leosroofingremodeling.com>',
+      //from: 'Your Website <onboarding@resend.dev>',
       to: import.meta.env.TO_EMAIL,
+      replyTo: email,
       subject: 'New Contact Form Submission',
       html: `
         <h2>New Contact Form Submission</h2>
